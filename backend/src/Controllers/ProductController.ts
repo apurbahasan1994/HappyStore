@@ -17,8 +17,8 @@ export class ProductController extends BaseController {
             return res.status(200).json({ products: products });
         }
         catch (e) {
-            res.status(400)
-            return next(e)
+            SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);
+            return;
         }
     }
 
@@ -28,8 +28,8 @@ export class ProductController extends BaseController {
             return res.status(200).json({ products: products });
         }
         catch (e) {
-            res.status(400)
-            return next(e)
+            SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);
+            return;
         }
     }
 
@@ -40,8 +40,8 @@ export class ProductController extends BaseController {
             return res.status(200).json({ product: product });
         }
         catch (e) {
-            res.status(400)
-            return next(e)
+            SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);
+            return;
         }
     }
 
@@ -68,8 +68,8 @@ export class ProductController extends BaseController {
             return res.status(200).json({ products: products });
         }
         catch (e) {
-            res.status(400)
-            return next(e)
+            SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);
+            return;
         }
     }
     public async createProduct(req: Request, res: Response, next: NextFunction) {
@@ -79,8 +79,8 @@ export class ProductController extends BaseController {
             return res.status(200).json({ product: product });
         }
         catch (e) {
-            res.status(400);
-            next(e);
+            SetResponseWithMessage.setErrorAndGoNext(e.message, 500, res, next);
+            return;
         }
     }
 
@@ -91,8 +91,8 @@ export class ProductController extends BaseController {
             return res.status(200).json({ message: 'Successfully created product', data: productWithCategory });
         }
         catch (e) {
-            res.status(400)
-            next(e);
+            SetResponseWithMessage.setErrorAndGoNext(e.message, 500, res, next);
+            return;
         }
     }
 }

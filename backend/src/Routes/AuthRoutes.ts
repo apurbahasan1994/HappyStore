@@ -3,6 +3,7 @@ import { BaseRoute } from '../BaseModels/BaseRouter';
 import { AuthController } from '../Controllers/AuthController';
 import { DynamicRouteBuilder } from '../Utils/DynamicRouteBuilder';
 import { IRouteConfig } from '../InterFaces/RouteHelper/DynamicRoute';
+import { EntityFieldValidator } from '../Validators/EntityValidator';
 export class AuthRouter extends BaseRoute {
   protected basePath: string = 'auth';
   private authController: AuthController;
@@ -10,7 +11,7 @@ export class AuthRouter extends BaseRoute {
     super(router);
     this.authController = new AuthController();
   }
-  
+
   protected makeDynamicRoutes() {
     const routes = this.makeDynicRouteList();
     DynamicRouteBuilder.build(routes, this.authController, this.router);
@@ -21,14 +22,14 @@ export class AuthRouter extends BaseRoute {
         methods: ["post"],
         path: '/' + this.basePath + '/signUp',
         middleWares: [],
-        validators: [],
+        validators: EntityFieldValidator.SignUpValidations,
         handler: this.authController.signUp
       },
       {
         methods: ["post"],
         path: '/' + this.basePath + '/signIn',
         middleWares: [],
-        validators: [],
+        validators: EntityFieldValidator.SignInValidations,
         handler: this.authController.signIn
       },
       {
