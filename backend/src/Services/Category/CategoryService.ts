@@ -1,8 +1,16 @@
 import Category from '../../Models/Category';
 import CategoryRepository from '../../Repositories/Category/CategoryRepository';
+export interface ICategoryService {
 
-class CategoryService {
-  public static async getAllCategories(): Promise<Category[]> {
+  getAllCategories(): Promise<Category[]>;
+  getCategoryById(id: number): Promise<Category | null>;
+  createCategory(categoryData: Partial<Category>): Promise<Category>;
+  updateCategory(id: number, categoryData: Partial<Category>): Promise<Category | null>;
+  deleteCategory(id: number): Promise<boolean>
+
+}
+class CategoryService implements ICategoryService {
+  public async getAllCategories(): Promise<Category[]> {
     try {
       const categories = await CategoryRepository.getAllCategories();
       return categories;
@@ -11,7 +19,7 @@ class CategoryService {
     }
   }
 
-  public static async getCategoryById(id: number): Promise<Category | null> {
+  public async getCategoryById(id: number): Promise<Category | null> {
     try {
       const category = await CategoryRepository.getCategoryById(id);
       return category;
@@ -20,7 +28,7 @@ class CategoryService {
     }
   }
 
-  public static async createCategory(categoryData: Partial<Category>): Promise<Category> {
+  public async createCategory(categoryData: Partial<Category>): Promise<Category> {
     try {
       const createdCategory = await CategoryRepository.createCategory(categoryData);
       return createdCategory;
@@ -29,7 +37,7 @@ class CategoryService {
     }
   }
 
-  public static async updateCategory(id: number, categoryData: Partial<Category>): Promise<Category | null> {
+  public async updateCategory(id: number, categoryData: Partial<Category>): Promise<Category | null> {
     try {
       const category = await CategoryRepository.updateCategory(id, categoryData);
       return category;
@@ -38,7 +46,7 @@ class CategoryService {
     }
   }
 
-  public static async deleteCategory(id: number): Promise<boolean> {
+  public async deleteCategory(id: number): Promise<boolean> {
     try {
       const isDeleted = await CategoryRepository.deleteCategory(id);
       return isDeleted;

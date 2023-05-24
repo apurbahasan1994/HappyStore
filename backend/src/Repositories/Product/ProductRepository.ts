@@ -72,7 +72,7 @@ class ProductRepository {
     }
   }
 
-  public static async setProductCategories(product: Product, category: number) {
+  public static async setProductCategories(product: Product, category: number): Promise<void> {
     try {
       const productWithCategory = product.setCategories([category]);
       return productWithCategory;
