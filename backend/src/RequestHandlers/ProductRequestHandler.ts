@@ -1,14 +1,17 @@
 import Product from "../Models/Product";
 import { ICreateProduct, ICreateProductWithCategory } from "../RequstDto/ProductDto";
-import ProductService from "../Services/Product/ProductService";
+import ProductService, { IProductService } from "../Services/Product/ProductService";
 
 export class ProductRequestHandler {
+    private readonly productService :IProductService;
 
-    constructor() { }
+    constructor() { 
+        this.productService = new ProductService();
+    }
 
     async createProduct(payload: ICreateProduct): Promise<Product> {
         try {
-            const product = await ProductService.createProduct(payload);
+            const product = await this.productService.createProduct(payload);
             return product;
         }
         catch (e) {
@@ -19,8 +22,8 @@ export class ProductRequestHandler {
         const { categoryId, ...rest } = payload;
 
         try {
-            const product = await ProductService.createProduct(rest);
-            const productWithCategory = ProductService.setProductCategories(product, categoryId);
+            const product = await this.productService.createProduct(rest);
+            const productWithCategory = this.productService.setProductCategories(product, categoryId);
             return productWithCategory;
         }
         catch (e) {
@@ -30,7 +33,7 @@ export class ProductRequestHandler {
     }
     async getProductByCategory(id: number): Promise<Product | null> {
         try {
-            const product = await ProductService.getProductByCategory(id);
+            const product = await this.productService.getProductByCategory(id);
             return product;
         }
         catch (e) {
@@ -40,7 +43,7 @@ export class ProductRequestHandler {
     }
     async updateProduct(id: number, payload: ICreateProduct): Promise<Product> {
         try {
-            const product = await ProductService.updateProduct(id, payload);
+            const product = await this.productService.updateProduct(id, payload);
             return product;
         }
         catch (e) {
@@ -48,11 +51,11 @@ export class ProductRequestHandler {
         }
     }
     async deleteProduct(id: number) {
-        await ProductService.deleteProduct(id);
+        await this.productService.deleteProduct(id);
     }
     async getAllProducts(): Promise<Product[]> {
         try {
-            const products = await ProductService.getAllProducts();
+            const products = await this.productService.getAllProducts();
             return products;
         }
         catch (e) {
@@ -61,7 +64,7 @@ export class ProductRequestHandler {
     }
     async getAllProductsWithCategories(): Promise<Product[]> {
         try {
-            const products = await ProductService.getAllProductsWithCategories();
+            const products = await this.productService.getAllProductsWithCategories();
             return products;
         }
         catch (e) {
@@ -70,7 +73,7 @@ export class ProductRequestHandler {
     }
     async getFeaturedProducts(limit: number): Promise<Product[]> {
         try {
-            const products = await ProductService.getFeaturedProducts(limit);
+            const products = await this.productService.getFeaturedProducts(limit);
             return products;
         }
         catch (e) {
@@ -81,7 +84,7 @@ export class ProductRequestHandler {
     }
     async getProductById(id: number): Promise<Product> {
         try {
-            const product = await ProductService.getProductById(id);
+            const product = await this.productService.getProductById(id);
             return product;
         }
         catch (e) {

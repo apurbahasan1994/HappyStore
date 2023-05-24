@@ -3,7 +3,7 @@ import { BaseController } from '../BaseModels/BaseController';
 import { ProductRequestHandler } from '../RequestHandlers/ProductRequestHandler';
 import { SetResponseWithMessage } from '../Utils/SetResWithMessage';
 
-export class ProductController extends BaseController {
+export class OrderController extends BaseController {
 
     private readonly requestHandler: ProductRequestHandler;
     constructor() {

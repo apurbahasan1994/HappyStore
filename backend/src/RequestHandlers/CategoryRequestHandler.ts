@@ -1,15 +1,18 @@
 import Category from "../Models/Category";
-import Product from "../Models/Product";
 import { ICreateCategory, IUpdateCategory } from "../RequstDto/CategoryDto";
-import CategoryService from "../Services/Category/CategoryService";
+import CategoryService, { ICategoryService } from "../Services/Category/CategoryService";
 
 export class CategoryRequestHandler {
 
-    constructor() { }
+    private readonly categoryService:ICategoryService;
+
+    constructor() {
+        this.categoryService = new CategoryService();
+     }
 
     async createCategory(payload: ICreateCategory): Promise<Category> {
         try {
-            const category = await CategoryService.createCategory(payload);
+            const category = await this.categoryService.createCategory(payload);
             return category;
         }
         catch (e) {
@@ -18,7 +21,7 @@ export class CategoryRequestHandler {
     }
     async updateCategory(id: number, payload: IUpdateCategory): Promise<Category> {
         try {
-            const Category = await CategoryService.updateCategory(id, payload);
+            const Category = await this.categoryService.updateCategory(id, payload);
             return Category;
         }
         catch (e) {
@@ -26,11 +29,11 @@ export class CategoryRequestHandler {
         }
     }
     async deleteCategory(id: number) {
-        await CategoryService.deleteCategory(id);
+        await this.categoryService.deleteCategory(id);
     }
     async getAllCategory(): Promise<Category[]> {
         try {
-            const categories = await CategoryService.getAllCategories();
+            const categories = await this.categoryService.getAllCategories();
             return categories;
         }
         catch (e) {
@@ -41,7 +44,7 @@ export class CategoryRequestHandler {
     }
     async getCategoryById(id: number): Promise<Category> {
         try {
-            const category = await CategoryService.getCategoryById(id);
+            const category = await this.categoryService.getCategoryById(id);
             return category;
         }
         catch (e) {

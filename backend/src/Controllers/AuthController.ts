@@ -5,7 +5,7 @@ import { SetResponseWithMessage } from '../Utils/SetResWithMessage';
 import { TokenResponseDto } from '../ResponseDto/AuthResponseDto';
 import { signUpDto } from '../RequstDto/SignUpDto';
 import { Tokenify } from '../Utils/JsonTokenify';
-import bcrypt from 'bcrypt';
+import { EntityFieldValidator } from '../Validators/EntityValidator';
 export class AuthController extends BaseController {
 
 
@@ -16,6 +16,11 @@ export class AuthController extends BaseController {
   }
 
   public async signUp(req: Request, res: Response, next: NextFunction): Promise<any> {
+    const { isEmpty } = EntityFieldValidator.vaidationErrors(req)
+    if (!isEmpty) {
+      SetResponseWithMessage.setErrorAndGoNext("Please check your submission more carefully", 400, res, next);
+      return;
+    }
     const {
       firstName,
       lastName,
@@ -49,10 +54,16 @@ export class AuthController extends BaseController {
     }
     catch (e) {
       SetResponseWithMessage.setErrorAndGoNext(e.message, 500, res, next);
+      return;
     }
   }
 
   public async signIn(req: Request, res: Response, next: NextFunction): Promise<any> {
+    const { isEmpty } = EntityFieldValidator.vaidationErrors(req)
+    if (!isEmpty) {
+      SetResponseWithMessage.setErrorAndGoNext("Invalid credentials", 400, res, next);
+      return;
+    }
     const { email, password } = req.body;
     const isPassMatched = await this.requestHandler.checkValidPassWord(password, email);
     if (!isPassMatched) {
@@ -65,6 +76,7 @@ export class AuthController extends BaseController {
     }
     catch (e) {
       SetResponseWithMessage.setErrorAndGoNext(e.message, 500, res, next);
+      return;
     }
   }
   public async refresh(req: Request, res: Response, next: NextFunction) {
@@ -75,6 +87,7 @@ export class AuthController extends BaseController {
       res.json(tokens);
     } catch (error) {
       SetResponseWithMessage.setErrorAndGoNext(error.message, 500, res, next);
+      return;
     }
   }
 }
