@@ -1,11 +1,11 @@
 import { signUpDto } from "../RequstDto/SignUpDto";
 import { SigninDto } from "../RequstDto/SignInDto";
-import { AuthenticationService } from "../Services/Authentication/AuthService";
+import { AuthenticationService, IAuthenticationService } from "../Services/Authentication/AuthService";
 import { TokenResponseDto } from "../ResponseDto/AuthResponseDto";
 
 export class AuthRequestHandler {
 
-    private readonly authService: AuthenticationService;
+    private readonly authService: IAuthenticationService;
 
     constructor() {
         this.authService = new AuthenticationService()

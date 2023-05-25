@@ -1,7 +1,15 @@
 import Category from '../../Models/Category';
+export interface ICategoryRepository {
+  getAllCategories(): Promise<Category[]>;
+  getCategoryById(id: number): Promise<Category | null>;
+  createCategory(categoryData: Partial<Category>): Promise<Category>;
+  updateCategory(id: number, categoryData: Partial<Category>): Promise<Category | null>;
+  deleteCategory(id: number): Promise<boolean>;
+}
 
-class CategoryRepository {
-  public static async getAllCategories(): Promise<Category[]> {
+
+class CategoryRepository implements ICategoryRepository {
+  public async getAllCategories(): Promise<Category[]> {
     try {
       const categories = await Category.findAll();
       return categories;
@@ -10,7 +18,7 @@ class CategoryRepository {
     }
   }
 
-  public static async getCategoryById(id: number): Promise<Category | null> {
+  public async getCategoryById(id: number): Promise<Category | null> {
     try {
       const category = await Category.findByPk(id);
       return category;
@@ -19,7 +27,7 @@ class CategoryRepository {
     }
   }
 
-  public static async createCategory(categoryData: Partial<Category>): Promise<Category> {
+  public async createCategory(categoryData: Partial<Category>): Promise<Category> {
     try {
       const createdCategory = await Category.create(categoryData);
       return createdCategory;
@@ -28,7 +36,7 @@ class CategoryRepository {
     }
   }
 
-  public static async updateCategory(id: number, categoryData: Partial<Category>): Promise<Category | null> {
+  public async updateCategory(id: number, categoryData: Partial<Category>): Promise<Category | null> {
     try {
       const category = await Category.findByPk(id);
       if (category) {
@@ -41,7 +49,7 @@ class CategoryRepository {
     }
   }
 
-  public static async deleteCategory(id: number): Promise<boolean> {
+  public async deleteCategory(id: number): Promise<boolean> {
     try {
       const category = await Category.findByPk(id);
       if (category) {

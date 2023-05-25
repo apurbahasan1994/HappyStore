@@ -5,7 +5,16 @@ import { requiredUserCreateFields } from "../Constants/Constants";
 import { UserRequestHandler } from "../RequestHandlers/UserRequstHandler";
 import { BaseController } from "../BaseModels/BaseController";
 
-export class UserController extends BaseController {
+export interface IUserController {
+    getAllUsers(req: Request, res: Response, next: NextFunction): Promise<void>;
+    createUser(req: Request, res: Response, next: NextFunction): void;
+    getUserById(req: Request, res: Response, next: NextFunction): void;
+    updateUser(req: Request, res: Response, next: NextFunction): void;
+    deleteUser(req: Request, res: Response, next: NextFunction): void;
+  }
+  
+
+export class UserController extends BaseController implements IUserController{
     private userRequestHandler: UserRequestHandler;
 
     constructor() {

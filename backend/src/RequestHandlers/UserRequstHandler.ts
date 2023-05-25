@@ -1,8 +1,8 @@
 import User from "../Models/User";
-import { UserService } from "../Services/User/UserService";
+import { IUserService, UserService } from "../Services/User/UserService";
 
 export class UserRequestHandler {
-    private userService: UserService;
+    private userService: IUserService;
 
     constructor() {
         this.userService = new UserService();

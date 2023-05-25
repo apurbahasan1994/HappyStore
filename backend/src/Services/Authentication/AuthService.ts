@@ -4,7 +4,13 @@ import { signUpDto } from "../../RequstDto/SignUpDto";
 import { TokenResponseDto } from "../../ResponseDto/AuthResponseDto";
 import { UserService } from "../User/UserService";
 import bcrypt from 'bcrypt';
-export class AuthenticationService {
+export interface IAuthenticationService {
+    signUp(payload: signUpDto): Promise<boolean>;
+    signIn(payload: SigninDto): Promise<TokenResponseDto | null>;
+    checkPasswordValidity(password: string, email: string): Promise<boolean | null>;
+}
+
+export class AuthenticationService implements IAuthenticationService {
 
 
     private readonly authRepo: AuthenticationRepository;

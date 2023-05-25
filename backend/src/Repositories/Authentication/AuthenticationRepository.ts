@@ -5,7 +5,14 @@ import { TokenResponseDto } from "../../ResponseDto/AuthResponseDto";
 import { Tokenify } from "../../Utils/JsonTokenify";
 import { UserRepository } from "../User/UserRepository";
 
-export class AuthenticationRepository {
+export interface IAuthenticationRepository {
+    signUp(payload: signUpDto): Promise<boolean>;
+    signIn(payload: SigninDto): Promise<TokenResponseDto | null>;
+    logOut(): Promise<void>;
+  }
+  
+
+export class AuthenticationRepository implements IAuthenticationRepository{
 
     private readonly userRepo: UserRepository;
     constructor() {

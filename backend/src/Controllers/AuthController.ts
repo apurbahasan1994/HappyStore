@@ -6,7 +6,14 @@ import { TokenResponseDto } from '../ResponseDto/AuthResponseDto';
 import { signUpDto } from '../RequstDto/SignUpDto';
 import { Tokenify } from '../Utils/JsonTokenify';
 import { EntityFieldValidator } from '../Validators/EntityValidator';
-export class AuthController extends BaseController {
+
+export interface IAuthController {
+  signUp(req: Request, res: Response, next: NextFunction): Promise<any>;
+  signIn(req: Request, res: Response, next: NextFunction): Promise<any>;
+  refresh(req: Request, res: Response, next: NextFunction): void;
+}
+
+export class AuthController extends BaseController implements IAuthController {
 
 
   private readonly requestHandler: AuthRequestHandler;

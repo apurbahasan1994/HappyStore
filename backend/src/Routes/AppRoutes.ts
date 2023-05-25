@@ -4,7 +4,7 @@ import { AuthRouter } from './AuthRoutes';
 import { ProductRouter } from './ProductRoutes';
 import { CategoryRouter } from './categoryRoutes';
 export class AppRoute extends BaseRoute {
-  protected basePath: string = '/';
+  protected basePath: string = '/api/';
   private authRouter: AuthRouter;
   private productRoter : ProductRouter;
   private categoryRouter : CategoryRouter
@@ -21,4 +21,5 @@ export class AppRoute extends BaseRoute {
   }
   protected makeDynamicRoutes(): void {
   }
+  
 }

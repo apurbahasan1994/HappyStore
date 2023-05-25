@@ -2,8 +2,21 @@
 import Category from '../../Models/Category';
 import Product from '../../Models/Product';
 
-class ProductRepository {
-  public static async getAllProducts(): Promise<Product[]> {
+export interface IProductRepository {
+  getAllProducts(): Promise<Product[]>;
+  getAllProductsWithCategories(): Promise<Product[]>;
+  getProductByCategory(id: number): Promise<Product | null>;
+  getProductById(id: number): Promise<Product | null>;
+  getFeaturedProducts(count: number): Promise<Product[] | null>;
+  createProduct(productData: Partial<Product>): Promise<Product>;
+  setProductCategories(product: Product, category: number): Promise<void>;
+  updateProduct(id: number, productData: Partial<Product>): Promise<Product | null>;
+  deleteProduct(id: number): Promise<boolean>;
+}
+
+
+class ProductRepository implements IProductRepository {
+  public async getAllProducts(): Promise<Product[]> {
     try {
       const products = await Product.findAll();
       return products;
@@ -12,7 +25,7 @@ class ProductRepository {
     }
   }
 
-  public static async getAllProductsWithCategories(): Promise<Product[]> {
+  public async getAllProductsWithCategories(): Promise<Product[]> {
     try {
       const products = await Product.findAll({
         include: [Category]
@@ -23,7 +36,7 @@ class ProductRepository {
     }
   }
 
-  public static async getProductByCategory(id: number): Promise<Product | null> {
+  public async getProductByCategory(id: number): Promise<Product | null> {
     try {
       const product = await Product.findOne({
         include: {
@@ -40,7 +53,7 @@ class ProductRepository {
     }
   }
 
-  public static async getProductById(id: number): Promise<Product | null> {
+  public async getProductById(id: number): Promise<Product | null> {
     try {
       const product = await Product.findByPk(id);
       return product;
@@ -49,7 +62,7 @@ class ProductRepository {
     }
   }
 
-  public static async getFeaturedProducts(count: number = 5): Promise<Product[] | null> {
+  public async getFeaturedProducts(count: number = 5): Promise<Product[] | null> {
     try {
       const products = await Product.findAll({
         where: {
@@ -63,7 +76,7 @@ class ProductRepository {
     }
   }
 
-  public static async createProduct(productData: Partial<Product>): Promise<Product> {
+  public async createProduct(productData: Partial<Product>): Promise<Product> {
     try {
       const createdProduct = await Product.create(productData);
       return createdProduct;
@@ -72,7 +85,7 @@ class ProductRepository {
     }
   }
 
-  public static async setProductCategories(product: Product, category: number): Promise<void> {
+  public async setProductCategories(product: Product, category: number): Promise<void> {
     try {
       const productWithCategory = product.setCategories([category]);
       return productWithCategory;
@@ -82,7 +95,7 @@ class ProductRepository {
 
   }
 
-  public static async updateProduct(id: number, productData: Partial<Product>): Promise<Product | null> {
+  public async updateProduct(id: number, productData: Partial<Product>): Promise<Product | null> {
     try {
       const product = await Product.findByPk(id);
       if (product) {
@@ -95,7 +108,7 @@ class ProductRepository {
     }
   }
 
-  public static async deleteProduct(id: number): Promise<boolean> {
+  public async deleteProduct(id: number): Promise<boolean> {
     try {
       const product = await Product.findByPk(id);
       if (product) {

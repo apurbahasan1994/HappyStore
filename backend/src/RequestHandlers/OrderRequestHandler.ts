@@ -1,10 +1,10 @@
 import Order from "../Models/Order";
 import Product from "../Models/Product";
 import { ICreateProduct, ICreateProductWithCategory } from "../RequstDto/ProductDto";
-import { OrderService } from "../Services/Order/OrderService";
+import { IOrderService, OrderService } from "../Services/Order/OrderService";
 
 export class OrderRequestHandler {
-    private orderService: OrderService;
+    private orderService: IOrderService;
 
     constructor() { 
         this.orderService = new OrderService();

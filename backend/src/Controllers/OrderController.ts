@@ -2,19 +2,21 @@ import { NextFunction, Request, Response } from 'express';
 import { BaseController } from '../BaseModels/BaseController';
 import { ProductRequestHandler } from '../RequestHandlers/ProductRequestHandler';
 import { SetResponseWithMessage } from '../Utils/SetResWithMessage';
+import Order from '../Models/Order';
+import { OrderRequestHandler } from '../RequestHandlers/OrderRequestHandler';
 
 export class OrderController extends BaseController {
 
-    private readonly requestHandler: ProductRequestHandler;
+    private readonly requestHandler: OrderRequestHandler;
     constructor() {
         super();
-        this.requestHandler = new ProductRequestHandler()
+        this.requestHandler = new OrderRequestHandler()
     }
 
-    public async getAllProducts(req: Request, res: Response, next: NextFunction) {
+    public async getAllOrders(req: Request, res: Response, next: NextFunction) {
         try {
-            const products = await this.requestHandler.getAllProducts();
-            return res.status(200).json({ products: products });
+            const orders: Order[] = await this.requestHandler.getAllOrders();
+            return res.status(200).json({ message: "Success", data: { orders } });
         }
         catch (e) {
             SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);
@@ -22,38 +24,16 @@ export class OrderController extends BaseController {
         }
     }
 
-    public async getAllProductsWithCategories(req: Request, res: Response, next: NextFunction) {
-        try {
-            const products = await this.requestHandler.getAllProductsWithCategories();
-            return res.status(200).json({ products: products });
-        }
-        catch (e) {
-            SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);
-            return;
-        }
-    }
 
-    public async getProductByCategory(req: Request, res: Response, next: NextFunction) {
-        const {categoryId} = req.query;
+    public async getOrderByPk(req: Request, res: Response, next: NextFunction) {
+        const { orderId } = req.params;
         try {
-            const product = await this.requestHandler.getProductByCategory(+categoryId);
-            return res.status(200).json({ product: product });
-        }
-        catch (e) {
-            SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);
-            return;
-        }
-    }
-
-    public async getProductByPk(req: Request, res: Response, next: NextFunction) {
-        const { productId } = req.params;
-        try {
-            const product = await this.requestHandler.getProductById(+productId);
+            const product = await this.requestHandler.getOrderById(+orderId);
             if (!product) {
-                SetResponseWithMessage.setErrorAndGoNext('could not find any product with that id', 404, res, next);
+                SetResponseWithMessage.setErrorAndGoNext('could not find any order with that id', 404, res, next);
                 return;
             }
-            return res.status(200).json({ product: product });
+            return res.status(200).json({ message: "Success", data: { product } });
         }
         catch (e) {
             SetResponseWithMessage.setErrorAndGoNext(e.message, 500, res, next);
@@ -61,22 +41,11 @@ export class OrderController extends BaseController {
         }
     }
 
-    public async getFeaturedProducts(req: Request, res: Response, next: NextFunction) {
-        const limit = req.query.limit || 5;
-        try {
-            const products = await this.requestHandler.getFeaturedProducts(+limit);
-            return res.status(200).json({ products: products });
-        }
-        catch (e) {
-            SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);
-            return;
-        }
-    }
-    public async createProduct(req: Request, res: Response, next: NextFunction) {
+    public async createOrder(req: Request, res: Response, next: NextFunction) {
         const payload = req.body;
         try {
-            const product = await this.requestHandler.createProduct(payload);
-            return res.status(200).json({ product: product });
+            const order : Order = await this.requestHandler.createOrder(payload);
+            return res.status(200).json({ message:"Success", data: {order} });
         }
         catch (e) {
             SetResponseWithMessage.setErrorAndGoNext(e.message, 500, res, next);
@@ -84,15 +53,4 @@ export class OrderController extends BaseController {
         }
     }
 
-    public async createProductWithCategories(req: Request, res: Response, next: NextFunction) {
-        const payload = req.body;
-        try {
-            const productWithCategory = await this.requestHandler.createProductWithCategories(payload);
-            return res.status(200).json({ message: 'Successfully created product', data: productWithCategory });
-        }
-        catch (e) {
-            SetResponseWithMessage.setErrorAndGoNext(e.message, 500, res, next);
-            return;
-        }
-    }
 }
