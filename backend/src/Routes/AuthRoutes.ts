@@ -38,7 +38,9 @@ export class AuthRouter extends BaseRoute {
         middleWares: [],
         validators: [],
         handler: this.authController.refresh
-      }
+      },
+     
+
     ]
     return routes;
   }

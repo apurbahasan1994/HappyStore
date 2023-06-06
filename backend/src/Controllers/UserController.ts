@@ -4,6 +4,9 @@ import { EntityFieldValidator } from "../Validators/EntityValidator";
 import { requiredUserCreateFields } from "../Constants/Constants";
 import { UserRequestHandler } from "../RequestHandlers/UserRequstHandler";
 import { BaseController } from "../BaseModels/BaseController";
+import { Tokenify } from "../Utils/JsonTokenify";
+import { SetResponseWithMessage } from "../Utils/SetResWithMessage";
+import User from "../Models/User";
 
 export interface IUserController {
     getAllUsers(req: Request, res: Response, next: NextFunction): Promise<void>;
@@ -11,10 +14,10 @@ export interface IUserController {
     getUserById(req: Request, res: Response, next: NextFunction): void;
     updateUser(req: Request, res: Response, next: NextFunction): void;
     deleteUser(req: Request, res: Response, next: NextFunction): void;
-  }
-  
+}
 
-export class UserController extends BaseController implements IUserController{
+
+export class UserController extends BaseController implements IUserController {
     private userRequestHandler: UserRequestHandler;
 
     constructor() {
@@ -66,7 +69,7 @@ export class UserController extends BaseController implements IUserController{
 
         try {
             const createdUser = this.userRequestHandler.createUser(newUser);
-            res.status(201).json({ user: createdUser });
+            res.status(201).json({ message: "Success", data: { user: createdUser } });
         } catch (error) {
             res.status(500).json({ message: 'Failed to create user' });
             next(error);
@@ -84,7 +87,7 @@ export class UserController extends BaseController implements IUserController{
                 return;
             }
 
-            res.status(200).json({ user });
+            res.status(200).json({ message: "Success", data: { user } });
         } catch (error) {
             res.status(500).json({ message: 'Failed to get user' });
             next(error);
@@ -128,7 +131,7 @@ export class UserController extends BaseController implements IUserController{
                 return;
             }
 
-            res.status(200).json({ user });
+            res.status(200).json({ message: "Success", data: { user } });
         } catch (error) {
             res.status(500).json({ message: 'Failed to update user' });
             next(error);
@@ -150,5 +153,23 @@ export class UserController extends BaseController implements IUserController{
             res.status(500).json({ message: 'Failed to delete user' });
             next(error);
         }
+    }
+    public async checkUserValidity(req: Request, res: Response, next: NextFunction) {
+
+        try {
+            const accessToken = req.headers.authorization.split(' ')[1];
+            const decoded = Tokenify.verifyAccessToken(accessToken);
+            if (decoded) {
+                const user = await this.userRequestHandler.getUserByEmail((decoded as Partial<User>).email);
+                return res.json({ mesage: 'success', data: { user } })
+            }
+            SetResponseWithMessage.setErrorAndGoNext("Unauthorized", 401, res, next);
+            return;
+        }
+        catch (error) {
+            SetResponseWithMessage.setErrorAndGoNext("Unauthorized", 401, res, next);
+            return;
+        }
+
     }
 }

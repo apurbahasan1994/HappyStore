@@ -3,9 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { secret, refresh } from '../Utils/EnvConfig';
 export class Tokenify {
 
-    static generateRefreshToken(user: any): string {
-        const { exp, ...userWithoutExp } = user;
-        return jwt.sign(userWithoutExp, refresh, { expiresIn: '15m' });
+    static generateRefreshToken(): string {
+        return jwt.sign({token:uuidv4()}, refresh, { expiresIn: '10h' });
     }
 
     static generateAcessToken(user: any): string {
@@ -15,7 +14,7 @@ export class Tokenify {
 
     static generateTokens(user: any): { accessToken: string; refreshToken: string } {
         const accessToken = Tokenify.generateAcessToken(user);
-        const refreshToken = Tokenify.generateRefreshToken(user);
+        const refreshToken = Tokenify.generateRefreshToken();
         return { accessToken, refreshToken };
     }
 

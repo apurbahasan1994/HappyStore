@@ -9,10 +9,10 @@ export interface IAuthenticationRepository {
     signUp(payload: signUpDto): Promise<boolean>;
     signIn(payload: SigninDto): Promise<TokenResponseDto | null>;
     logOut(): Promise<void>;
-  }
-  
+}
 
-export class AuthenticationRepository implements IAuthenticationRepository{
+
+export class AuthenticationRepository implements IAuthenticationRepository {
 
     private readonly userRepo: UserRepository;
     constructor() {
@@ -38,7 +38,8 @@ export class AuthenticationRepository implements IAuthenticationRepository{
         try {
             const user: User = await this.userRepo.getUserByEmail(payload.email);
             if (user) {
-                return Tokenify.generateTokens(user.dataValues);
+                const {passwordHash,...userData}=user.dataValues;
+                return { ...Tokenify.generateTokens(userData), user: userData };
 
             }
             return null

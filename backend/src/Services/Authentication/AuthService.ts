@@ -46,8 +46,7 @@ export class AuthenticationService implements IAuthenticationService {
     }
     public async checkPasswordValidity(password: string, email: string): Promise<boolean | null> {
         try {
-            const user = await this.userService.getUserByEmail(email);
-            const { passwordHash } = user.dataValues;
+            const passwordHash = await this.userService.getUserPassWord(email);
             const matched = await bcrypt.compare(password, passwordHash);
             return matched;
         }

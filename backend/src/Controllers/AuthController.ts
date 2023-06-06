@@ -89,6 +89,10 @@ export class AuthController extends BaseController implements IAuthController {
   public async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const { refreshToken } = req.body;
+      if (!refreshToken) {
+        SetResponseWithMessage.setErrorAndGoNext("Token not valid", 400, res, next);
+        return;
+      }
       const decoded = Tokenify.verifyRefreshToken(refreshToken);
       const tokens = Tokenify.generateTokens(decoded);
       res.json(tokens);
@@ -97,4 +101,5 @@ export class AuthController extends BaseController implements IAuthController {
       return;
     }
   }
+
 }

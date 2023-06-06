@@ -38,6 +38,16 @@ export class UserRequestHandler {
         }
     }
 
+    public async getUserByEmail(email: string): Promise<User | null> {
+        try {
+            const user: User = await this.userService.getUserByEmail(email);
+            return user;
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+
     public async updateUser(id: string, updatedUser: Partial<User>): Promise<User | null> {
         try {
             const user = await this.userService.updateUser(id, updatedUser);

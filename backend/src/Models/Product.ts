@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional, BelongsTo, BelongsToMany, HasManySetAssociationsMixin } from 'sequelize';
 import { sequelize } from '../Utils/Configurations/DatabaseConfig';
 import Category from './Category';
-import ProductCategory from './ProductCategory';
+
 
 interface ProductAttributes {
   id: number;
