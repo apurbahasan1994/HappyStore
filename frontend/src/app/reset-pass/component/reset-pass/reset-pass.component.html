@@ -1,0 +1,54 @@
+<app-auth-component-wrapper [imageUrl]="'assets/images/reset-pass.jpg'">
+    <form class="login-form w-100" fxFlex [formGroup]="resetForm">
+        <div class="mb-20 font-size-20"><span class="primary-color font-size-20 font-weight-600">Login</span></div>
+        <div class="text-secondary mb30">Welcome back! We are very happy to see you again. Login with the
+            data you have entered during SignUp
+        </div>
+        <div class="form-container" fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayout.lt-md="column" class="w-100">
+                <div class="w-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input required matInput type="password" placeholder="Password" formControlName="password">
+                        <mat-error *ngIf="resetForm.controls.password.invalid && resetForm.controls.password.touched">
+                            Please enter a password.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayout.lt-md="column" class="w-100">
+                <div class="w-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Confrim Password</mat-label>
+                        <input required matInput type="password" placeholder="Confrim Password"
+                            formControlName="confirmPassword">
+                        <mat-error
+                            *ngIf="resetForm.controls.confirmPassword.invalid && resetForm.controls.confirmPassword.touched">
+                            Please enter confirm password.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-error
+                *ngIf="resetForm.hasError('repeat') &&  (resetForm.get('confirmPassword').dirty || resetForm.get('confirmPassword').touched)">
+                Passwords do not match.
+            </mat-error>
+        
+            <div class="w-100" fxLayout="row" fxLayout.lt-md="column">
+                <div class="w-100">
+                    <button fxLayout="row" fxLayoutAlign="center center" mat-raised-button color="primary"
+                        class="w-100 btn" >
+                        <!-- <mat-spinner diameter="30" class="uploader-status" *ngIf="loading$|async"></mat-spinner> -->
+                        <span >Submit</span>
+                    </button>
+                </div>
+            </div>
+            <div class="mt-30 w-100">
+                <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center" class="w-100">
+                     <a class="primary-color font-size-14"
+                        routerLink="/signup">Login</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</app-auth-component-wrapper>

@@ -1,0 +1,27 @@
+@import '../../../../styles/colors';
+.container {
+    height: 100vh;
+    width: 100vw;
+
+}
+
+.login-page {
+    max-width: 1200px;
+    height: 90vh;
+    margin: auto auto;
+    box-shadow: 0px 0px 50px 2px  #8f88bb4d !important;;
+    // padding: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.header{
+    max-width: 400px;
+    margin: 0 auto;
+    padding-left: 30px;
+    padding-top:40px ;
+    overflow-x: hidden;
+}
+.content{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
