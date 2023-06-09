@@ -2,8 +2,21 @@ import { NextFunction, Request, Response } from 'express';
 import { BaseController } from '../BaseModels/BaseController';
 import { ProductRequestHandler } from '../RequestHandlers/ProductRequestHandler';
 import { SetResponseWithMessage } from '../Utils/SetResWithMessage';
+import { EntityFieldValidator } from '../Validators/EntityValidator';
+import { requiredgetProductByPk } from '../Constants/Constants';
 
-export class ProductController extends BaseController {
+export interface IProductController {
+    getAllProducts(req: Request, res: Response, next: NextFunction): void;
+    getAllProductsWithCategories(req: Request, res: Response, next: NextFunction): void;
+    getProductByCategory(req: Request, res: Response, next: NextFunction): void;
+    getProductByPk(req: Request, res: Response, next: NextFunction): void;
+    getFeaturedProducts(req: Request, res: Response, next: NextFunction): void;
+    createProduct(req: Request, res: Response, next: NextFunction): void;
+    createProductWithCategories(req: Request, res: Response, next: NextFunction): void;
+}
+
+
+export class ProductController extends BaseController implements IProductController {
 
     private readonly requestHandler: ProductRequestHandler;
     constructor() {
@@ -34,7 +47,7 @@ export class ProductController extends BaseController {
     }
 
     public async getProductByCategory(req: Request, res: Response, next: NextFunction) {
-        const {categoryId} = req.query;
+        const { categoryId } = req.query;
         try {
             const product = await this.requestHandler.getProductByCategory(+categoryId);
             return res.status(200).json({ product: product });
@@ -46,6 +59,10 @@ export class ProductController extends BaseController {
     }
 
     public async getProductByPk(req: Request, res: Response, next: NextFunction) {
+        if (EntityFieldValidator.isRequireFieldExist(req.body, requiredgetProductByPk)) {
+            SetResponseWithMessage.setErrorAndGoNext('productId is required', 400, res, next);
+            return;
+        }
         const { productId } = req.params;
         try {
             const product = await this.requestHandler.getProductById(+productId);

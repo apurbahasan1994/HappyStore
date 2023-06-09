@@ -1,5 +1,5 @@
 import Product from '../../Models/Product';
-import ProductRepository from '../../Repositories/Product/ProductRepository';
+import ProductRepository, { IProductRepository } from '../../Repositories/Product/ProductRepository';
 
 export interface IProductService {
   getAllProducts(): Promise<Product[]>;
@@ -14,9 +14,13 @@ export interface IProductService {
 }
 
 class ProductService implements IProductService {
+  private readonly productRepo : IProductRepository;
+  constructor(){
+    this.productRepo = new ProductRepository();
+  }
   public async getAllProducts(): Promise<Product[]> {
     try {
-      const products = await ProductRepository.getAllProducts();
+      const products = await this.productRepo.getAllProducts();
       return products;
     } catch (error) {
       throw error;
@@ -24,7 +28,7 @@ class ProductService implements IProductService {
   }
   public async getAllProductsWithCategories(): Promise<Product[]> {
     try {
-      const products = await ProductRepository.getAllProductsWithCategories();
+      const products = await this.productRepo.getAllProductsWithCategories();
       return products;
     } catch (error) {
       throw error;
@@ -33,7 +37,7 @@ class ProductService implements IProductService {
 
   public async getProductById(id: number): Promise<Product | null> {
     try {
-      const product = await ProductRepository.getProductById(id);
+      const product = await this.productRepo.getProductById(id);
       return product;
     } catch (error) {
       throw error;
@@ -42,7 +46,7 @@ class ProductService implements IProductService {
 
   public async getProductByCategory(id: number): Promise<Product | null> {
     try {
-      const product = await ProductRepository.getProductByCategory(id);
+      const product = await this.productRepo.getProductByCategory(id);
       return product;
     } catch (error) {
       throw error;
@@ -51,7 +55,7 @@ class ProductService implements IProductService {
 
   public async getFeaturedProducts(limit: number): Promise<Product[] | null> {
     try {
-      const products = await ProductRepository.getFeaturedProducts(limit);
+      const products = await this.productRepo.getFeaturedProducts(limit);
       return products;
     } catch (error) {
       throw error;
@@ -60,7 +64,7 @@ class ProductService implements IProductService {
 
   public async createProduct(productData: Partial<Product>): Promise<Product> {
     try {
-      const createdProduct = await ProductRepository.createProduct(productData);
+      const createdProduct = await this.productRepo.createProduct(productData);
       return createdProduct;
     } catch (error) {
       throw error;
@@ -70,7 +74,7 @@ class ProductService implements IProductService {
   public async setProductCategories(product: Product, categoryId: number): Promise<void> {
 
     try {
-      const productWithCategory = await ProductRepository.setProductCategories(product, categoryId);
+      const productWithCategory = await this.productRepo.setProductCategories(product, categoryId);
       return productWithCategory;
     } catch (error) {
       throw error;
@@ -80,7 +84,7 @@ class ProductService implements IProductService {
 
   public async updateProduct(id: number, productData: Partial<Product>): Promise<Product | null> {
     try {
-      const product = await ProductRepository.updateProduct(id, productData);
+      const product = await this.productRepo.updateProduct(id, productData);
       return product;
     } catch (error) {
       throw error;
@@ -89,7 +93,7 @@ class ProductService implements IProductService {
 
   public async deleteProduct(id: number): Promise<boolean> {
     try {
-      const isDeleted = await ProductRepository.deleteProduct(id);
+      const isDeleted = await this.productRepo.deleteProduct(id);
       return isDeleted;
     } catch (error) {
       throw new error;

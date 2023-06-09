@@ -1,0 +1,89 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Robotto';
+}
+
+.main-container {
+    position: absolute;
+    top: 64px;
+    left: 250px;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mt-30 {
+    margin-top: 30px !important;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.pad-20 {
+    padding: 20px;
+}
+
+.btn {
+    min-height: 40px;
+    background-color: $primary-color !important;
+    color: white !important;
+}
+.btn-secondary{
+    background-color: $secondary-btn-color !important;
+    color: $primary-color !important
+}
+.font-weight-400 {
+    font-weight: 400;
+}
+
+.font-weight-500 {
+    font-weight: 500;
+}
+
+.font-weight-600 {
+    font-weight: 600;
+}
+
+.font-size-14 {
+    font-size: 14px;
+}
+.pt-b-20{
+    padding-top:20px;
+    padding-bottom: 20px;
+}
+.pt-b-30{
+    padding-top:30px;
+    padding-bottom: 30px;
+
+}
+.mt-60{
+    margin-top: 60px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: $text-color;
+
+}
+
+.text-secondary {
+    color: $text-color;
+    opacity: .5;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.primary-color {
+    color: $primary-color;
+}

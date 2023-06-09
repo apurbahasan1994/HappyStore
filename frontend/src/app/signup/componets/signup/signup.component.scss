@@ -1,0 +1,30 @@
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.header-container{
+  margin: 0 auto;
+  max-width: 400px;
+  padding-top: 30px;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+::ng-deep.uploader-status.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: white !important;
+}

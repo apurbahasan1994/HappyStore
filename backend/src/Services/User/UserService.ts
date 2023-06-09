@@ -1,7 +1,18 @@
 import User from "../../Models/User";
 import { UserRepository } from "../../Repositories/User/UserRepository";
 
-export class UserService {
+
+export interface IUserService {
+    getAllUsers(): Promise<void>;
+    getUserByEmail(email: string): Promise<User | null>;
+    createUser(userData: Partial<User>): Promise<User | null>;
+    getUserById(id: string): Promise<User | null>;
+    updateUser(id: string, updatedUser: Partial<User>): Promise<User | undefined>;
+    deleteUser(id: string): Promise<boolean | null>;
+}
+
+
+export class UserService implements IUserService {
     private userRepository: UserRepository;
 
     constructor() {
@@ -19,12 +30,22 @@ export class UserService {
 
     public async getUserByEmail(email: string): Promise<User | null> {
         try {
-            const user = this.userRepository.getUserByEmail(email)
+            const user = await this.userRepository.getUserByEmail(email)
             return user;
         }
         catch (e) {
             throw e;
         }
+    }
+    public async getUserPassWord(email: string) {
+        try {
+            const passwordHash = await this.userRepository.getUserPassWord(email)
+            return passwordHash;
+        }
+        catch (e) {
+            throw e;
+        }
+
     }
 
     public async createUser(userData: Partial<User>): Promise<User | null> {

@@ -13,7 +13,7 @@ interface UserAttributes {
     city?: string;
     country: string;
     phone?: string;
-    mobile?: string;
+    mobile: string;
     isAdmin: boolean;
 }
 interface CategoryCreationAttributes extends Optional<UserAttributes, 'id'> { }
@@ -29,7 +29,7 @@ class User extends Model<UserAttributes, CategoryCreationAttributes> implements 
     city?: string;
     country: string;
     phone?: string;
-    mobile?: string;
+    mobile: string;
     isAdmin: boolean;
 
     public readonly createdAt!: Date;

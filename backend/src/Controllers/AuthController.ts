@@ -6,13 +6,37 @@ import { TokenResponseDto } from '../ResponseDto/AuthResponseDto';
 import { signUpDto } from '../RequstDto/SignUpDto';
 import { Tokenify } from '../Utils/JsonTokenify';
 import { EntityFieldValidator } from '../Validators/EntityValidator';
-export class AuthController extends BaseController {
+import { ParamsDictionary } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
+
+export interface IAuthController {
+  signUp(req: Request, res: Response, next: NextFunction): Promise<any>;
+  signIn(req: Request, res: Response, next: NextFunction): Promise<any>;
+  refresh(req: Request, res: Response, next: NextFunction): void;
+  forgotPassWord(req: Request, res: Response, next: NextFunction): void;
+}
+
+export class AuthController extends BaseController implements IAuthController {
 
 
   private readonly requestHandler: AuthRequestHandler;
   constructor() {
     super();
     this.requestHandler = new AuthRequestHandler();
+  }
+  async forgotPassWord(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const { isEmpty } = EntityFieldValidator.vaidationErrors(req)
+    if (!isEmpty) {
+      SetResponseWithMessage.setErrorAndGoNext("User not found with this email", 400, res, next);
+      return;
+    }
+    const { email } = req.body;
+    try {
+      await this.requestHandler.forgotPassWord(email);
+    }
+    catch (err) {
+      SetResponseWithMessage.setErrorAndGoNext(err.message, 500, res, next);
+    }
   }
 
   public async signUp(req: Request, res: Response, next: NextFunction): Promise<any> {
@@ -82,12 +106,17 @@ export class AuthController extends BaseController {
   public async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const { refreshToken } = req.body;
+      if (!refreshToken) {
+        SetResponseWithMessage.setErrorAndGoNext("Token not valid", 401, res, next);
+        return;
+      }
       const decoded = Tokenify.verifyRefreshToken(refreshToken);
       const tokens = Tokenify.generateTokens(decoded);
       res.json(tokens);
     } catch (error) {
-      SetResponseWithMessage.setErrorAndGoNext(error.message, 500, res, next);
+      SetResponseWithMessage.setErrorAndGoNext(error.message, 401, res, next);
       return;
     }
   }
+
 }

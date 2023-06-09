@@ -1,8 +1,8 @@
 import User from "../Models/User";
-import { UserService } from "../Services/User/UserService";
+import { IUserService, UserService } from "../Services/User/UserService";
 
 export class UserRequestHandler {
-    private userService: UserService;
+    private userService: IUserService;
 
     constructor() {
         this.userService = new UserService();
@@ -31,6 +31,16 @@ export class UserRequestHandler {
     public async getUserById(id: string): Promise<User | null> {
         try {
             const user: User = await this.userService.getUserById(id);
+            return user;
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+
+    public async getUserByEmail(email: string): Promise<User | null> {
+        try {
+            const user: User = await this.userService.getUserByEmail(email);
             return user;
         }
         catch (e) {

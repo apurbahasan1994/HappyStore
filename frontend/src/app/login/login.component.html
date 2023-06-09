@@ -1,0 +1,70 @@
+<app-auth-component-wrapper [imageUrl]="'assets/images/login.jpg'">
+    <form class="login-form w-100" fxFlex [formGroup]="loginForm">
+        <div class="mb-20 font-size-20"><span class="primary-color font-size-20 font-weight-600">Login</span></div>
+        <div class="text-secondary mb30">Welcome back! We are very happy to see you again. Login with the
+            data you have entered during SignUp
+        </div>
+        <div class="form-container" fxLayout="column" fxLayoutAlign="center start">
+            <div fxlayout="row" fxlayout.lt-md="column" class="w-100">
+                <div class="w-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input required matInput placeholder="Email" formControlName="email">
+                        <mat-error *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.touched">
+                            Please enter a valid email.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayout.lt-md="column" class="w-100">
+                <div class="w-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input required matInput type="password" placeholder="Password" formControlName="password">
+                        <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">
+                            Please enter a password.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayout.lt-md="column" class="w-100">
+                <div class="w-100">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Confrim Password</mat-label>
+                        <input required matInput type="password" placeholder="Confrim Password"
+                            formControlName="confirmPassword">
+                        <mat-error
+                            *ngIf="loginForm.controls.confirmPassword.invalid && loginForm.controls.confirmPassword.touched">
+                            Please enter confirm password.
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-error
+                *ngIf="loginForm.hasError('repeat') &&  (loginForm.get('confirmPassword').dirty || loginForm.get('confirmPassword').touched)">
+                Passwords do not match.
+            </mat-error>
+            <div fxLayout="row" fxLayout="column" class="w-100">
+                <div class="w-100" style="text-align: right;">
+                    <a class="link" [routerLink]="'/forgot-pass'">Forget Password</a>
+                </div>
+            </div>
+
+            <div class="mt-30 w-100" fxLayout="row" fxLayout.lt-md="column">
+                <div class="w-100">
+                    <button fxLayout="row" fxLayoutAlign="center center" mat-raised-button color="primary"
+                        class="w-100 btn" (click)="onLogin($event)">
+                        <mat-spinner diameter="30" class="uploader-status" *ngIf="loading$|async"></mat-spinner>
+                        <span *ngIf="!(loading$|async)">Login</span>
+                    </button>
+                </div>
+            </div>
+            <div class="mt-30 w-100">
+                <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center" class="w-100">
+                    <span class="text-secondary">Dont have an account?</span> <a class="primary-color font-size-14"
+                        routerLink="/signup">SignUp</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</app-auth-component-wrapper>

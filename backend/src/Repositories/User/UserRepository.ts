@@ -28,22 +28,39 @@ export class UserRepository {
 
     public async getUserById(id: string): Promise<User | null> {
         try {
-            const user: User = await User.findOne({ where: { id: id } });
+            const user: User = await User.findOne({
+                where: { id: id }, attributes: {
+                    exclude: ['passwordHash']
+                }
+            });
             return user;
         }
         catch (e) {
             throw new Error(`Failed to get the user with id = ${id}`);
         }
     }
+    public async getUserPassWord(email: string) {
 
+        try {
+            const user = await User.findOne({
+                where: {
+                    email: email,
+                },
+
+            });
+            return user.dataValues.passwordHash;
+        }
+        catch (e) {
+            throw new Error('Could not find user with that email')
+        }
+    }
     public async getUserByEmail(email: string) {
 
         try {
             const user = await User.findOne({
                 where: {
                     email: email,
-                }
-                ,
+                },
                 attributes: {
                     exclude: ['passwordHash']
                 }

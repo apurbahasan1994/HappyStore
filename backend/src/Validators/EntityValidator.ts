@@ -9,7 +9,7 @@ export class EntityFieldValidator {
         return missingFields.length === 0;
     }
 
-    static SignInValidations = [
+    static EmailValidationsSignIn = [
         body('email')
             .notEmpty()
             .withMessage('Email cant be empty')
@@ -21,6 +21,22 @@ export class EntityFieldValidator {
                     throw new Error('User not found')
                 }
             }),
+    ]
+    static EmailValidationsSignUp = [
+        body('email')
+            .notEmpty()
+            .withMessage('Email cant be empty')
+            .isEmail()
+            .withMessage('Valid email is required')
+            .custom(async (email) => {
+                const usedEmail = await EntityFieldValidator.userService.getUserByEmail(email);
+                if (usedEmail) {
+                    throw new Error('User already registered')
+                }
+            }),
+    ]
+
+    static PassworValidations =[
         body('password')
             .notEmpty()
             .withMessage('Password can not be empty')
@@ -35,11 +51,16 @@ export class EntityFieldValidator {
                 }
                 return true;
             }),
+    ]
 
+    static SignInValidations = [
+       ...EntityFieldValidator.EmailValidationsSignIn,
+       ...EntityFieldValidator.PassworValidations
     ]
 
     static SignUpValidations = [
-        ...EntityFieldValidator.SignInValidations,
+        ...EntityFieldValidator.EmailValidationsSignUp,
+        ...EntityFieldValidator.PassworValidations,
         body('country')
             .notEmpty()
             .withMessage('Country cant be empty'),

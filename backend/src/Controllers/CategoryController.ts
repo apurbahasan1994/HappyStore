@@ -3,6 +3,8 @@ import { BaseController } from '../BaseModels/BaseController';
 import { CategoryRequestHandler } from '../RequestHandlers/CategoryRequestHandler';
 import { SetResponseWithMessage } from '../Utils/SetResWithMessage';
 import { ICreateCategory, IUpdateCategory } from '../RequstDto/CategoryDto';
+import { EntityFieldValidator } from '../Validators/EntityValidator';
+import { requiredCategoryCreate, requiredgetCategoryByPk } from '../Constants/Constants';
 
 export class CategoryController extends BaseController {
 
@@ -24,6 +26,10 @@ export class CategoryController extends BaseController {
     }
 
     public async getCategoryByPk(req: Request, res: Response, next: NextFunction) {
+        if (EntityFieldValidator.isRequireFieldExist(req.params, requiredgetCategoryByPk)) {
+            SetResponseWithMessage.setErrorAndGoNext('categoryId was not provided', 400, res, next);
+            return;
+        }
         const { categoryId } = req.params;
         try {
             const category = await this.requestHandler.getCategoryById(+categoryId);
@@ -40,7 +46,11 @@ export class CategoryController extends BaseController {
     }
 
     public async createCategory(req: Request, res: Response, next: NextFunction) {
-        const payload : ICreateCategory = req.body;
+        if (EntityFieldValidator.isRequireFieldExist(req.body, requiredCategoryCreate)) {
+            SetResponseWithMessage.setErrorAndGoNext('Name is required', 400, res, next);
+            return;
+        }
+        const payload: ICreateCategory = req.body;
         try {
             const category = await this.requestHandler.createCategory(payload);
             return res.status(200).json({ category: category });

@@ -4,7 +4,14 @@ import { signUpDto } from "../../RequstDto/SignUpDto";
 import { TokenResponseDto } from "../../ResponseDto/AuthResponseDto";
 import { UserService } from "../User/UserService";
 import bcrypt from 'bcrypt';
-export class AuthenticationService {
+export interface IAuthenticationService {
+    signUp(payload: signUpDto): Promise<boolean>;
+    signIn(payload: SigninDto): Promise<TokenResponseDto | null>;
+    checkPasswordValidity(password: string, email: string): Promise<boolean | null>;
+    forgotPassWord(email: string)
+}
+
+export class AuthenticationService implements IAuthenticationService {
 
 
     private readonly authRepo: AuthenticationRepository;
@@ -25,6 +32,17 @@ export class AuthenticationService {
         }
     }
 
+    public async forgotPassWord(email: string) {
+
+        try {
+           await this.authRepo.forgotPassWord(email);
+        }
+        catch (err) {
+            throw err;
+        }
+
+    }
+
     public async signIn(payload: SigninDto): Promise<TokenResponseDto | null> {
         try {
             const user = this.userService.getUserByEmail(payload.email);
@@ -40,8 +58,7 @@ export class AuthenticationService {
     }
     public async checkPasswordValidity(password: string, email: string): Promise<boolean | null> {
         try {
-            const user = await this.userService.getUserByEmail(email);
-            const { passwordHash } = user.dataValues;
+            const passwordHash = await this.userService.getUserPassWord(email);
             const matched = await bcrypt.compare(password, passwordHash);
             return matched;
         }

@@ -33,6 +33,13 @@ export class UserRouter extends BaseRoute {
             },
             {
                 methods: ["get"],
+                path: '/' + this.basePath + '/me',
+                middleWares: [],
+                validators: [],
+                handler: this.userController.checkUserValidity
+            },
+            {
+                methods: ["get"],
                 path: '/' + this.basePath + `/:userId`,
                 middleWares: [],
                 validators: [],
@@ -45,6 +52,7 @@ export class UserRouter extends BaseRoute {
                 validators: [],
                 handler: this.userController.updateUser
             },
+
         ]
         return routes;
     }
