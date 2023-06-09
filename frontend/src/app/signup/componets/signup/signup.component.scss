@@ -24,3 +24,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+::ng-deep.uploader-status.mat-progress-spinner circle,
+.mat-spinner circle {
+    stroke: white !important;
+}

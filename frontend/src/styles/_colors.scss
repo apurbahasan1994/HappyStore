@@ -1,5 +1,5 @@
 // Color Palette
-$primary-color: #5138ED;
+$primary-color: #007dfe;
 $secondary-color: #FF9800;
 $accent-color: #9C27B0;
 $text-color: #212121;
@@ -7,6 +7,7 @@ $background-color: #F5F5F5;
 $secondary-btn-color: #e9dfdf;
 
 // Material Design Palette
+$shadow:#bbd9f642;
 $primary-light: lighten($primary-color, 20%);
 $primary-dark: darken($primary-color, 20%);
 

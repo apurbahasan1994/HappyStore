@@ -1,6 +1,6 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -55,6 +55,7 @@ export const createTranslateLoader = (http: HttpClient) => {
         StoreModule.forRoot({}, {})
     ],
     providers: [
+        
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

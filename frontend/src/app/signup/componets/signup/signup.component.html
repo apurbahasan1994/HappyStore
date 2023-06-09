@@ -11,7 +11,8 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>First Name</mat-label>
             <input matInput formControlName="firstName" placeholder="First Name">
-            <mat-error *ngIf="personalInfoForm.get('firstName').invalid && personalInfoForm.get('firstName').touched">
+            <mat-error
+              *ngIf="(personalInfoForm|hasFormError:['firstName']:'required') &&personalInfoFormControls['firstName'].touched">
               First Name is required
             </mat-error>
           </mat-form-field>
@@ -24,28 +25,39 @@
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Email</mat-label>
-            <input matInput formControlName="email" placeholder="Email">
-            <mat-error *ngIf="personalInfoForm.get('email').invalid && personalInfoForm.get('email').touched">
+            <input matInput formControlName="email" required type="email" placeholder="Email">
+            <mat-error *ngIf="hasError(personalInfoForm,'email','email')">
+              Valid email is required
+            </mat-error>
+            <mat-error
+              *ngIf="hasError(personalInfoForm,'email','required')">
               Email is required
             </mat-error>
+           
           </mat-form-field>
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Password</mat-label>
             <input matInput formControlName="password" placeholder="Password" type="password">
-            <mat-error *ngIf="personalInfoForm.get('password').invalid && personalInfoForm.get('password').touched">
+            <mat-error *ngIf="hasError(personalInfoForm,'password','required')">
               Password is required
+            </mat-error>
+            <mat-error *ngIf="hasError(personalInfoForm,'password','minlength')">
+              Password minimum length is 6 characters
             </mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Phone</mat-label>
-            <input matInput type="number" formControlName="phone" placeholder="Phone">
-            <mat-error *ngIf="personalInfoForm.get('phone').invalid && personalInfoForm.get('phone').touched">
-              Phone is required
-            </mat-error>
+            <input matInput formControlName="phone" placeholder="Phone">
           </mat-form-field>
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Mobile</mat-label>
-            <input matInput type="number" required formControlName="mobile" placeholder="Mobile">
+            <input matInput  required formControlName="mobile" placeholder="Mobile">
+            <mat-error *ngIf="hasError(personalInfoForm,'mobile','minlength')">
+              Invalid mobile number
+            </mat-error>
+            <mat-error *ngIf="hasError(personalInfoForm,'mobile','required')">
+              Mobile is required
+            </mat-error>
           </mat-form-field>
           <div class="mt20" fxLayoutGap="20px" fxLayout="row" fxLayoutAlign="space-between center">
             <button class="btn btn-secondary" mat-stroked-button type="button" (click)="personalInfoForm.reset()">
@@ -76,7 +88,7 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>ZIP</mat-label>
             <input matInput formControlName="zip" placeholder="ZIP">
-            <mat-error *ngIf="accountInfoForm.get('zip').invalid && accountInfoForm.get('zip').touched">
+            <mat-error *ngIf="hasError(accountInfoForm,'zip','required')">
               ZIP is required
             </mat-error>
           </mat-form-field>
@@ -87,6 +99,9 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Country</mat-label>
             <input matInput formControlName="country" placeholder="Country">
+            <mat-error *ngIf="hasError(accountInfoForm,'country','required')">
+              Country is required
+            </mat-error>
           </mat-form-field>
           <div class="mt20" fxLayoutGap="20px" fxLayout="row" fxLayoutAlign="space-between center">
             <button class="btn btn-secondary" mat-stroked-button color="primary" (click)="stepper.previous()">
@@ -102,19 +117,22 @@
         <p>Personal Information:</p>
         <p>First Name: {{ personalInfoForm.value.firstName }}</p>
         <p>Last Name: {{ personalInfoForm.value.lastName }}</p>
-        <p>Email: {{ accountInfoForm.value.email }}</p>
-        <p>Street: {{ personalInfoForm.value.street }}</p>
-        <p>House: {{ personalInfoForm.value.house }}</p>
-        <p>ZIP: {{ personalInfoForm.value.zip }}</p>
-        <p>City: {{ personalInfoForm.value.city }}</p>
-        <p>Country: {{ personalInfoForm.value.country }}</p>
+        <p>Email: {{ personalInfoForm.value.email }}</p>
         <p>Phone: {{ personalInfoForm.value.phone }}</p>
         <p>Mobile: {{ personalInfoForm.value.mobile }}</p>
+        <p>Street: {{ accountInfoForm.value.street }}</p>
+        <p>House: {{ accountInfoForm.value.house }}</p>
+        <p>ZIP: {{ accountInfoForm.value.zip }}</p>
+        <p>City: {{ accountInfoForm.value.city }}</p>
+        <p>Country: {{ accountInfoForm.value.country }}</p>
         <div class="mt20" fxLayoutGap="20px" fxLayout="row" fxLayoutAlign="space-between center">
           <button class="btn btn-secondary" mat-stroked-button color="primary" (click)="stepper.previous()">
             Back
           </button>
-          <button class="btn" mat-button color="primary" (click)="submit()">Submit</button>
+          <button class="btn" mat-button color="primary" (click)="submit()">
+            <mat-spinner diameter="30" class="uploader-status" *ngIf="loading$|async"></mat-spinner>
+            <span *ngIf="!(loading$|async)">Submit</span>
+          </button>
         </div>
       </mat-step>
     </mat-horizontal-stepper>

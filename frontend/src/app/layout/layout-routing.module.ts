@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { Screen1Component } from './screen1/screen1.component';
 import { Screen2Component } from './screen2/screen2.component';
+import { AuthGuard } from '@app/shared/guard';
 
 const routes: Routes = [
     {
@@ -12,19 +13,22 @@ const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'dashboard'
+                redirectTo: 'dashboard',
             },
             {
                 path: 'dashboard',
-                loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+                loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
+                canActivate: [AuthGuard]
             },
             {
                 path: 'screen1',
-                loadChildren: () => import('./screen1/screen1.module').then(m => m.Screen1Module)
+                loadChildren: () => import('./screen1/screen1.module').then(m => m.Screen1Module),
+                canActivate: [AuthGuard]
             },
             {
                 path: 'screen2',
-                component: Screen2Component
+                component: Screen2Component,
+                canActivate: [AuthGuard]
             }
         ]
     }
@@ -34,4 +38,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class LayoutRoutingModule {}
+export class LayoutRoutingModule { }

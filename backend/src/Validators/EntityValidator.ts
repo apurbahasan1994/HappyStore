@@ -74,7 +74,6 @@ export class EntityFieldValidator {
 
     static vaidationErrors(req: Request) {
         const errors = validationResult(req);
-        console.log(errors.isEmpty());
         return { isEmpty: errors.isEmpty(), errors: errors };
     }
 

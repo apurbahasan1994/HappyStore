@@ -8,6 +8,7 @@ export interface IAuthenticationService {
     signUp(payload: signUpDto): Promise<boolean>;
     signIn(payload: SigninDto): Promise<TokenResponseDto | null>;
     checkPasswordValidity(password: string, email: string): Promise<boolean | null>;
+    forgotPassWord(email: string)
 }
 
 export class AuthenticationService implements IAuthenticationService {
@@ -29,6 +30,17 @@ export class AuthenticationService implements IAuthenticationService {
         catch (e) {
             throw e;
         }
+    }
+
+    public async forgotPassWord(email: string) {
+
+        try {
+           await this.authRepo.forgotPassWord(email);
+        }
+        catch (err) {
+            throw err;
+        }
+
     }
 
     public async signIn(payload: SigninDto): Promise<TokenResponseDto | null> {

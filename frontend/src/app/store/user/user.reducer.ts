@@ -45,7 +45,7 @@ export function reducer(state = initialState, action: fromActions.All): UserStat
         case fromActions.Types.SIGN_UP_EMAIL:
             return { ...state, loading: true, error: null, entity: (action as fromActions.SignUpEmail).user }
         case fromActions.Types.SIGN_UP_EMAIL_SUCCESS:
-            return { ...state, loading: true, error: null, entity: null }
+            return { ...state, loading: false, error: null, entity: null }
         case fromActions.Types.SIGN_UP_EMAIL_ERROR:
             return { ...state, loading: false, error: (action as fromActions.SignInEmailError).error }
         

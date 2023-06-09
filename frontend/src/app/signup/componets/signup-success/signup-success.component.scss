@@ -1,0 +1,16 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    & .main-content{
+        max-height: 600px;
+        max-width: 600px;
+    }
+    .naviation-btn{
+        max-width: 200px;
+        min-width: 200px;
+    }
+
+}

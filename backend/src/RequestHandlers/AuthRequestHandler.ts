@@ -21,6 +21,16 @@ export class AuthRequestHandler {
         }
 
     }
+    async forgotPassWord(email: string) {
+
+        try {
+            await this.authService.forgotPassWord(email);
+        }
+        catch (e) {
+
+            throw e;
+        }
+    }
     async signIn(payload: SigninDto): Promise<TokenResponseDto | null> {
         try {
             const response: TokenResponseDto | null = await this.authService.signIn(payload);

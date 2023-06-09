@@ -9,10 +9,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SharedModule } from '@app/shared/shared.module';
+import { PipesModule } from '@app/shared/pipes/pipes.module';
+import { SignupSuccessComponent } from './componets/signup-success/signup-success.component';
 
 
 @NgModule({
-  declarations: [SignupComponent],
+  declarations: [SignupComponent, SignupSuccessComponent],
   imports: [
     CommonModule,
     SignupRoutingModule,
@@ -22,7 +24,7 @@ import { SharedModule } from '@app/shared/shared.module';
     MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class SignupModule { }

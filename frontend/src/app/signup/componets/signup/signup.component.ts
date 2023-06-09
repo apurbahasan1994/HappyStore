@@ -19,13 +19,14 @@ export class SignupComponent implements OnInit {
   constructor(private fb: FormBuilder, private store: Store<AppState>) { }
 
   ngOnInit(): void {
+    this.loading$ = this.store.pipe(select(getLoading));
     this.personalInfoForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      phone: ['', Validators.required],
-      mobile: ['']
+      phone: ['',],
+      mobile: [null, [Validators.required, Validators.minLength(11)]],
     });
 
     this.accountInfoForm = this.fb.group({
@@ -37,15 +38,33 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  get personalInfoFormControls() {
+    return this.personalInfoForm.controls;
+  }
+  get accountInfoFormControls() {
+    return this.accountInfoForm.controls;
+  }
+
+  hasError(formGroup: FormGroup, controlName: string, error: string) {
+    const control = formGroup.get(controlName);
+    if (!control || !control.errors) {
+      return false;
+    }
+    return control.errors[error] && control.touched;
+  }
+
+
   nextStep(stepper: any): void {
     stepper.next();
   }
 
   submit(): void {
+
     if (this.personalInfoForm.invalid || this.accountInfoForm.invalid) {
       return;
     }
     const values: IUserBase = { ...this.personalInfoForm.value, ...this.accountInfoForm.value }
+    values['confirmPassword'] = this.personalInfoForm.value.password;
     this.store.dispatch(new SignUpEmail(values));
   }
 
