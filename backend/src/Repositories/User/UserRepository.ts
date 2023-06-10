@@ -1,3 +1,5 @@
+import { hashingSalt } from "../../Constants/Constants";
+import PasswordToken from "../../Models/PasswordResetToken";
 import User from "../../Models/User";
 import { AuthUtil } from "../../Utils/AuthUtils";
 
@@ -17,7 +19,7 @@ export class UserRepository {
 
     public async createUser(user: Partial<User>): Promise<User | null> {
         try {
-            user.passwordHash = await AuthUtil.hashedAPssWord(user.passwordHash, 10);
+            user.passwordHash = await AuthUtil.hashedPassWord(user.passwordHash, hashingSalt);
             const newUser: User = await User.create(user);
             return newUser;
         }
@@ -54,6 +56,21 @@ export class UserRepository {
             throw new Error('Could not find user with that email')
         }
     }
+    public async getToken(token: string) {
+
+        try {
+            const reseToken = await PasswordToken.findOne({
+                where: {
+                    token: token,
+                },
+
+            });
+            return reseToken.dataValues;
+        }
+        catch (e) {
+            throw new Error('Invalid token')
+        }
+    }
     public async getUserByEmail(email: string) {
 
         try {
@@ -73,7 +90,7 @@ export class UserRepository {
 
     }
 
-    public async updateUser(id: string, updatedUser: Partial<User>): Promise<User | null> {
+    public async updateUser(id: number, updatedUser: Partial<User>): Promise<User | null> {
         try {
             const user = await User.findByPk(id);
             if (user) {

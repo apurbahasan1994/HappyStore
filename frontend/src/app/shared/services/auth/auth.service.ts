@@ -22,7 +22,7 @@ export class AuthService implements ISignInAble, ISignUpAble {
     }));;
   }
   validateEmailAndSendResetPassEmail(email: string) {
-    return this._http.post(`${this.baseUrl}auth/signIn`, { email })
+    return this._http.post(`${this.baseUrl}auth/forgot`, email)
   }
   checkUserValidity() {
     return this._http.get(`${this.baseUrl}users/me`).pipe(map((response) => {
@@ -38,6 +38,11 @@ export class AuthService implements ISignInAble, ISignUpAble {
     this.isLoggedIn = false;
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+  }
+  resetPassWord(payload: { password: string, token: string }) {
+
+    return this._http.post(`${this.baseUrl}auth/reset`, payload);
+
   }
   refreshToken(): Observable<any> {
     const accessToken = localStorage.getItem('accessToken');

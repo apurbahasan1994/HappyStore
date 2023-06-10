@@ -24,10 +24,13 @@ export enum Types {
     SIGN_OUT_EMAIL_SUCCESS = "[User] Sign out with email: Success",
     SIGN_OUT_EMAIL_ERROR = "[User] Sign out with email: ERROR",
 
-    RESET_PASS_EMAIL = "[User] Reset pass with email: Start",
-    RESET_PASS_EMAIL_SUCCESS = "[User] Reset in with email: Success",
-    RESET_PASS_EMAIL_ERROR = "[User] Reset in with email: ERROR",
+    FORGOT_PASS_EMAIL = "[User] Forgot pass with email: Start",
+    FORGOT_PASS_EMAIL_SUCCESS = "[User] Forgot in with email: Success",
+    FORGOT_PASS_EMAIL_ERROR = "[User] Forgot in with email:error",
 
+    RESET_PASSWORD = "[User] Reset Password: Start",
+    RESET_PASSWORD_SUCCESS = "[User] Reset Password: Success",
+    RESET_PASSWORD_ERROR = "[User] Reset Password: Error"
 }
 
 // init
@@ -105,21 +108,37 @@ export class SignOutError implements Action {
 }
 
 
-// reset pass
-export class ResetPassEmail implements Action {
-    readonly type: string = Types.RESET_PASS_EMAIL;
+// frgot pass
+export class ForgotPassEmail implements Action {
+    readonly type: string = Types.FORGOT_PASS_EMAIL;
     constructor(public email: string) { }
 }
 
-export class ResetPassEmailSuccess implements Action {
-    readonly type: string = Types.RESET_PASS_EMAIL_SUCCESS;
+export class ForgotPassEmailSuccess implements Action {
+    readonly type: string = Types.FORGOT_PASS_EMAIL_SUCCESS;
     constructor(public message: string) { }
 }
 
-export class ResetPassEmailError implements Action {
-    readonly type: string = Types.RESET_PASS_EMAIL_ERROR;
+export class ForgotPassEmailError implements Action {
+    readonly type: string = Types.FORGOT_PASS_EMAIL_ERROR;
     constructor(public error: string) { }
 }
+
+// reset pass 
+export class ResetPassword implements Action {
+    readonly type = Types.RESET_PASSWORD;
+    constructor(public newPassword: string, public resetToken: string) { }
+}
+
+export class ResetPasswordSuccess implements Action {
+    readonly type = Types.RESET_PASSWORD_SUCCESS;
+}
+
+export class ResetPasswordError implements Action {
+    readonly type = Types.RESET_PASSWORD_ERROR;
+    constructor(public error: string) { }
+}
+
 export type All
     = SignInEmail
     | SignInEmailError
@@ -134,6 +153,9 @@ export type All
     | InitAuthorized
     | InitUnAuthorized
     | InitError
-    | ResetPassEmail
-    | ResetPassEmailSuccess
-    | ResetPassEmailError
+    | ForgotPassEmail
+    | ForgotPassEmailSuccess
+    | ForgotPassEmailError
+    | ResetPassword
+    | ResetPasswordSuccess
+    | ResetPasswordError

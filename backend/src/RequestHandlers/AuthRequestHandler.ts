@@ -2,6 +2,8 @@ import { signUpDto } from "../RequstDto/SignUpDto";
 import { SigninDto } from "../RequstDto/SignInDto";
 import { AuthenticationService, IAuthenticationService } from "../Services/Authentication/AuthService";
 import { TokenResponseDto } from "../ResponseDto/AuthResponseDto";
+import { ICreateUser } from "../RequstDto/UserDto";
+import { ResetPassDTO } from "../RequstDto/ResetPassDto";
 
 export class AuthRequestHandler {
 
@@ -21,6 +23,7 @@ export class AuthRequestHandler {
         }
 
     }
+
     async forgotPassWord(email: string) {
 
         try {
@@ -31,6 +34,7 @@ export class AuthRequestHandler {
             throw e;
         }
     }
+
     async signIn(payload: SigninDto): Promise<TokenResponseDto | null> {
         try {
             const response: TokenResponseDto | null = await this.authService.signIn(payload);
@@ -41,6 +45,7 @@ export class AuthRequestHandler {
         }
 
     }
+
     async checkValidPassWord(password: string, email: string): Promise<boolean | null> {
         try {
             const isMatched = await this.authService.checkPasswordValidity(password, email);
@@ -50,5 +55,16 @@ export class AuthRequestHandler {
 
         }
     }
+
+    async resetPassWord(userData: Partial<ResetPassDTO>, token: string): Promise<boolean | null> {
+        try {
+            const isUpdatable = await this.authService.resetPassWord(userData, token);
+            return isUpdatable;
+        }
+        catch (e) {
+            throw e;
+        }
+    }
+
 
 }

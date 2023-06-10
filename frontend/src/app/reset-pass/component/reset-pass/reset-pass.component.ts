@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '@app/store';
-import { Store } from '@ngrx/store';
-
+import { Store, select } from '@ngrx/store';
+import * as fromUser from '../../../store/user'
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-reset-pass',
   templateUrl: './reset-pass.component.html',
@@ -11,9 +12,12 @@ import { Store } from '@ngrx/store';
 })
 export class ResetPassComponent implements OnInit {
   resetForm: FormGroup;
-
-  constructor(private formBuilder: FormBuilder, private router: Router, private store: Store<AppState>) { }
+  token:string='';
+  loading$:Observable<boolean>;
+  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private router: Router, private store: Store<AppState>) { }
   ngOnInit(): void {
+    this.loading$=this.store.pipe(select(fromUser.getLoading));
+    this.token = this.route.snapshot.params['token'];
     this.createForm();
   }
   createForm() {
@@ -21,6 +25,13 @@ export class ResetPassComponent implements OnInit {
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]]
     })
+  }
+
+  onsubmit() {
+    if (this.resetForm.invalid) {
+      return;
+    }
+    this.store.dispatch(new fromUser.ResetPassword(this.resetForm.value.password, this.token))
   }
 
 }

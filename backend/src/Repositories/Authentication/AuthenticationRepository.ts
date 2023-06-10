@@ -1,9 +1,12 @@
+import { hashingSalt } from "../../Constants/Constants";
 import { MailSendConfig } from "../../InterFaces/MailConfig";
 import PasswordToken from "../../Models/PasswordResetToken";
 import User from "../../Models/User";
+import { ResetPassDTO } from "../../RequstDto/ResetPassDto";
 import { SigninDto } from "../../RequstDto/SignInDto";
 import { signUpDto } from "../../RequstDto/SignUpDto";
 import { TokenResponseDto } from "../../ResponseDto/AuthResponseDto";
+import { AuthUtil } from "../../Utils/AuthUtils";
 import { Tokenify } from "../../Utils/JsonTokenify";
 import { MailSneder } from "../../Utils/MailSender";
 import { Utility } from "../../Utils/Util";
@@ -14,6 +17,7 @@ export interface IAuthenticationRepository {
     signIn(payload: SigninDto): Promise<TokenResponseDto | null>;
     logOut(): Promise<void>;
     forgotPassWord(email: string);
+    resetPassWord(userData: Partial<ResetPassDTO>, token: string)
 }
 
 
@@ -74,16 +78,38 @@ export class AuthenticationRepository implements IAuthenticationRepository {
 
     }
 
+
+    async resetPassWord(userData: Partial<ResetPassDTO>, token: string) {
+        try {
+            const resetToken = await this.userRepo.getToken(token);
+            if (!resetToken) {
+                throw new Error('Invalid token');
+            }
+            if (resetToken.expires_at < new Date()) {
+                throw new Error('Invalid token');
+            }
+            const hashedPassWord = await AuthUtil.hashedPassWord(userData.password, hashingSalt)
+            const user = await this.userRepo.updateUser(userData.id, { passwordHash: hashedPassWord, id: + userData.id });
+            if (user) {
+                return true;
+            }
+            return false;
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
     public async forgotPassWord(email: string) {
         try {
             const user: Partial<User> = await this.userRepo.getUserByEmail(email);
             const expirationTime = new Date();
             expirationTime.setHours(expirationTime.getMinutes() + 4);
             const resetToken = await AuthenticationRepository.createPassWordToken(user.id, expirationTime);
-            const requestUrl = `http://localhost:4200/reset-pass`
+            const requestUrl = `http://localhost:4200/reset-pass/${resetToken.dataValues.token}`
             if (user) {
                 await MailSneder.sendMail({
-                    from: 'happyshop@exaple.com',
+                    from: 'hasanapu099@gmail.com',
                     to: email,
                     subject: "User registration success",
                     text: `Click this link to reset your password link:${requestUrl}`

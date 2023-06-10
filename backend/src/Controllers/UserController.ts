@@ -42,7 +42,8 @@ export class UserController extends BaseController implements IUserController {
             res.status(400).json({ message: 'Missing required fields' });
             return;
         }
-        const { name,
+        const { firstName,
+            lastName,
             email,
             street,
             house,
@@ -55,7 +56,8 @@ export class UserController extends BaseController implements IUserController {
             isAdmin } = req.body;
 
         const newUser: ICreateUser = {
-            name,
+            firstName,
+            lastName,
             email,
             password,
             zip,
@@ -100,7 +102,9 @@ export class UserController extends BaseController implements IUserController {
             return;
         }
         const userId: string = req.params.id;
-        const { name,
+        const {
+            firstName,
+            lastName,
             email,
             street,
             house,
@@ -111,7 +115,8 @@ export class UserController extends BaseController implements IUserController {
             phone,
             mobile, } = req.body;
         const updatedUser: ICreateUser = {
-            name,
+            firstName,
+            lastName,
             email,
             password,
             zip,

@@ -70,7 +70,7 @@ export class UserService implements IUserService {
 
     public async updateUser(id: string, updatedUser: Partial<User>): Promise<User | undefined> {
         try {
-            const user = await this.userRepository.updateUser(id, updatedUser);
+            const user = await this.userRepository.updateUser(+id, updatedUser);
             return user;
         }
         catch (e) {

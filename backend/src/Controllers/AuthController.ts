@@ -6,14 +6,17 @@ import { TokenResponseDto } from '../ResponseDto/AuthResponseDto';
 import { signUpDto } from '../RequstDto/SignUpDto';
 import { Tokenify } from '../Utils/JsonTokenify';
 import { EntityFieldValidator } from '../Validators/EntityValidator';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
+import User from '../Models/User';
+import { ICreateUser } from '../RequstDto/UserDto';
+import { ResetPassDTO } from '../RequstDto/ResetPassDto';
+
 
 export interface IAuthController {
   signUp(req: Request, res: Response, next: NextFunction): Promise<any>;
   signIn(req: Request, res: Response, next: NextFunction): Promise<any>;
-  refresh(req: Request, res: Response, next: NextFunction): void;
-  forgotPassWord(req: Request, res: Response, next: NextFunction): void;
+  refresh(req: Request, res: Response, next: NextFunction): Promise<any>;
+  forgotPassWord(req: Request, res: Response, next: NextFunction): Promise<any>;
+  resetPassWord(req: Request, res: Response, next: NextFunction): Promise<any>
 }
 
 export class AuthController extends BaseController implements IAuthController {
@@ -24,7 +27,7 @@ export class AuthController extends BaseController implements IAuthController {
     super();
     this.requestHandler = new AuthRequestHandler();
   }
-  async forgotPassWord(req: Request, res: Response, next: NextFunction): Promise<void> {
+  async forgotPassWord(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> {
     const { isEmpty } = EntityFieldValidator.vaidationErrors(req)
     if (!isEmpty) {
       SetResponseWithMessage.setErrorAndGoNext("User not found with this email", 400, res, next);
@@ -33,6 +36,7 @@ export class AuthController extends BaseController implements IAuthController {
     const { email } = req.body;
     try {
       await this.requestHandler.forgotPassWord(email);
+      return res.status(200).json({ message: "success" });
     }
     catch (err) {
       SetResponseWithMessage.setErrorAndGoNext(err.message, 500, res, next);
@@ -103,7 +107,7 @@ export class AuthController extends BaseController implements IAuthController {
       return;
     }
   }
-  public async refresh(req: Request, res: Response, next: NextFunction) {
+  public async refresh(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> {
     try {
       const { refreshToken } = req.body;
       if (!refreshToken) {
@@ -118,5 +122,40 @@ export class AuthController extends BaseController implements IAuthController {
       return;
     }
   }
+
+  async resetPassWord(req: Request, res: Response, next: NextFunction): Promise<Response<any, Record<string, any>>> {
+
+    try {
+      const accessToken = req.headers.authorization.split(' ')[1];
+      const decoded: Partial<User> = Tokenify.verifyAccessToken(accessToken);
+      if (!decoded) {
+        SetResponseWithMessage.setErrorAndGoNext("Unauthorized", 401, res, next);
+        return;
+      }
+      const { isEmpty } = EntityFieldValidator.vaidationErrors(req)
+      if (!isEmpty) {
+        SetResponseWithMessage.setErrorAndGoNext("Invalid payload object", 400, res, next);
+        return;
+      }
+      const { password, token } = req.body;
+      const userData: Partial<ResetPassDTO> = {
+        id: decoded.id,
+        password: password
+      };
+      const updatable = await this.requestHandler.resetPassWord(userData, token);
+      if (updatable) {
+        res.json(204).json({ message: "Successfull" });
+        return;
+      }
+      SetResponseWithMessage.setErrorAndGoNext("Invalid credentials", 404, res, next);
+      return;
+    }
+    catch (error) {
+      SetResponseWithMessage.setErrorAndGoNext("Unauthorized", 401, res, next);
+      return;
+    }
+
+  }
+
 
 }

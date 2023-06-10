@@ -51,7 +51,8 @@ export class UserEffects {
         map((action: SignUpEmail) => action.user),
         switchMap((user: IUserBase) => {
             return this.authService.signUp(user).pipe(
-                map((_) =>{
+                map((_) => {
+                    this.notificcation.success('Successfully signed up')
                     this.router.navigate(['/signup/success']);
                     return new SignUpEmailSuccess()
                 }),
@@ -74,7 +75,8 @@ export class UserEffects {
                     const { user, accessToken, refreshToken } = response.responseWithToken;
                     localStorage.setItem('accessToken', accessToken);
                     localStorage.setItem('refreshToken', refreshToken);
-                    this.router.navigateByUrl('')
+                    this.router.navigateByUrl('');
+                    this.notificcation.success('Successfully logged in');
                     return new SignInEmailSuccess(user)
                 }),
                 catchError((error) => {
@@ -105,14 +107,42 @@ export class UserEffects {
         }),
     );
     @Effect()
-    resetPass: Observable<Action> = this.actions.pipe(
-        ofType(Types.RESET_PASS_EMAIL),
-        map((action: fromActions.ResetPassEmail) => action.email),
+    forgotPass: Observable<Action> = this.actions.pipe(
+        ofType(Types.FORGOT_PASS_EMAIL),
+        map((action: fromActions.ForgotPassEmail) => action.email),
         switchMap((email: string) => this.authService.validateEmailAndSendResetPassEmail(email)
 
             .pipe(
-                map((_) => new fromActions.ResetPassEmailSuccess('sucessfull')),
-                catchError(err => of(new fromActions.ResetPassEmailError(err.message)))
+                map((_) => {
+                    this.notificcation.success('Successfull, and email is sent to you inbox with reset passwork link');
+                    return new fromActions.ForgotPassEmailSuccess('sucessfull')
+                }),
+                catchError(err => {
+                    this.notificcation.error(err.message);
+                    return of(new fromActions.ForgotPassEmailError(err.message))
+                })
+            )
+        ),
+
+    )
+
+    @Effect()
+    resetPass: Observable<Action> = this.actions.pipe(
+        ofType(Types.RESET_PASSWORD),
+        map((action: fromActions.ResetPassword) => {
+            return { password: action.newPassword, token: action.resetToken };
+        }),
+        switchMap((payload: { password: string, token: string }) => this.authService.resetPassWord(payload)
+
+            .pipe(
+                map((_) => {
+                    this.notificcation.success('Successfully');
+                    return new fromActions.ResetPasswordSuccess()
+                }),
+                catchError(err => {
+                    this.notificcation.error(err.message);
+                    return of(new fromActions.ResetPasswordError(err.message))
+                })
             )
         ),
 

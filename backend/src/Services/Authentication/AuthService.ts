@@ -1,6 +1,8 @@
 import { AuthenticationRepository } from "../../Repositories/Authentication/AuthenticationRepository";
+import { ResetPassDTO } from "../../RequstDto/ResetPassDto";
 import { SigninDto } from "../../RequstDto/SignInDto";
 import { signUpDto } from "../../RequstDto/SignUpDto";
+import { ICreateUser } from "../../RequstDto/UserDto";
 import { TokenResponseDto } from "../../ResponseDto/AuthResponseDto";
 import { UserService } from "../User/UserService";
 import bcrypt from 'bcrypt';
@@ -8,7 +10,8 @@ export interface IAuthenticationService {
     signUp(payload: signUpDto): Promise<boolean>;
     signIn(payload: SigninDto): Promise<TokenResponseDto | null>;
     checkPasswordValidity(password: string, email: string): Promise<boolean | null>;
-    forgotPassWord(email: string)
+    forgotPassWord(email: string);
+    resetPassWord(userData:Partial<ResetPassDTO> , email: string)
 }
 
 export class AuthenticationService implements IAuthenticationService {
@@ -35,7 +38,20 @@ export class AuthenticationService implements IAuthenticationService {
     public async forgotPassWord(email: string) {
 
         try {
-           await this.authRepo.forgotPassWord(email);
+            await this.authRepo.forgotPassWord(email);
+        }
+        catch (err) {
+            throw err;
+        }
+
+    }
+
+
+    public async resetPassWord(userData: Partial<ICreateUser>, token: string) {
+
+        try {
+            const updatable = await this.authRepo.resetPassWord(userData, token);
+            return updatable;
         }
         catch (err) {
             throw err;
@@ -56,6 +72,7 @@ export class AuthenticationService implements IAuthenticationService {
             throw e;
         }
     }
+
     public async checkPasswordValidity(password: string, email: string): Promise<boolean | null> {
         try {
             const passwordHash = await this.userService.getUserPassWord(email);

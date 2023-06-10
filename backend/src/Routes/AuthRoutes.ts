@@ -46,6 +46,13 @@ export class AuthRouter extends BaseRoute {
         validators: EntityFieldValidator.EmailValidationsSignIn,
         handler: this.authController.forgotPassWord
       },
+      {
+        methods: ["post"],
+        path: '/' + this.basePath + '/reset',
+        middleWares: [],
+        validators: EntityFieldValidator.tokenValidations,
+        handler: this.authController.resetPassWord
+      },
      
 
     ]

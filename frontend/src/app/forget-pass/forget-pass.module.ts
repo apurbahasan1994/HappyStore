@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from '@app/shared/shared.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FlexLayoutModule } from '@angular/flex-layout';
 const routes: Route[] = [{
   path: '', component: ForgetPassComponent
 }]
@@ -25,7 +26,8 @@ const routes: Route[] = [{
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    SharedModule
+    SharedModule,
+    FlexLayoutModule
   ]
 })
 export class ForgetPassModule { }
