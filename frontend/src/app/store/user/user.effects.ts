@@ -106,6 +106,7 @@ export class UserEffects {
             )
         }),
     );
+    
     @Effect()
     forgotPass: Observable<Action> = this.actions.pipe(
         ofType(Types.FORGOT_PASS_EMAIL),
