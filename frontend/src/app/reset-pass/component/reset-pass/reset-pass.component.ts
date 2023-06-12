@@ -13,11 +13,13 @@ import { Observable } from 'rxjs';
 export class ResetPassComponent implements OnInit {
   resetForm: FormGroup;
   token:string='';
+  email:string='';
   loading$:Observable<boolean>;
   constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private router: Router, private store: Store<AppState>) { }
   ngOnInit(): void {
     this.loading$=this.store.pipe(select(fromUser.getLoading));
     this.token = this.route.snapshot.params['token'];
+    this.email = this.route.snapshot.queryParams['email'];
     this.createForm();
   }
   createForm() {
@@ -31,7 +33,7 @@ export class ResetPassComponent implements OnInit {
     if (this.resetForm.invalid) {
       return;
     }
-    this.store.dispatch(new fromUser.ResetPassword(this.resetForm.value.password, this.token))
+    this.store.dispatch(new fromUser.ResetPassword(this.resetForm.value.password, this.token,this.email))
   }
 
 }

@@ -14,7 +14,7 @@ export class AuthenticationCheck {
             const decoded = Tokenify.verifyAccessToken(token);
             next();
         } catch (error) {
-            return res.sendStatus(403);
+            return res.sendStatus(401);
         }
     }
 }

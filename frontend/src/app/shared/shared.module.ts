@@ -10,12 +10,13 @@ import { PipesModule } from './pipes/pipes.module';
     CommonModule,
     NotificationModule,
     NotificationModule.forRoot(),
-    FlexLayoutModule,PipesModule
+    FlexLayoutModule, PipesModule
   ],
   exports: [
     NotificationModule,
     AuthComponentWrapperComponent,
-    PipesModule
+    PipesModule,
+    FlexLayoutModule
   ]
 })
 export class SharedModule { }

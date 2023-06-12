@@ -15,6 +15,8 @@ import { SharedModule } from './shared/shared.module';
 import { effects, reducers } from './store/index';
 import { UserReducer } from './store/user';
 import { AuthInterceptor } from './shared/auth.interceptor';
+import { UsersReducer } from './store/users';
+import { ProductsReducer } from './store/products';
 
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
@@ -37,13 +39,15 @@ export const createTranslateLoader = (http: HttpClient) => {
         OverlayModule,
         HttpClientModule,
         SharedModule,
-        StoreModule.forRoot({ user: UserReducer }, {
-            runtimeChecks: {
-                strictStateImmutability: true,
-                strictActionImmutability: true
-            }
-        }),
+        // StoreModule.forRoot({ user: UserReducer, users: UsersReducer }, {
+        //     runtimeChecks: {
+        //         strictStateImmutability: true,
+        //         strictActionImmutability: true
+        //     }
+        // }),
         StoreModule.forFeature('user', UserReducer),
+        StoreModule.forFeature('users', UsersReducer),
+        StoreModule.forFeature('products', ProductsReducer),
         EffectsModule.forRoot(effects),
         TranslateModule.forRoot({
             loader: {
@@ -55,7 +59,7 @@ export const createTranslateLoader = (http: HttpClient) => {
         StoreModule.forRoot({}, {})
     ],
     providers: [
-        
+
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

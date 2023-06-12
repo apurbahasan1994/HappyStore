@@ -127,7 +127,7 @@ export class ForgotPassEmailError implements Action {
 // reset pass 
 export class ResetPassword implements Action {
     readonly type = Types.RESET_PASSWORD;
-    constructor(public newPassword: string, public resetToken: string) { }
+    constructor(public newPassword: string, public resetToken: string,public email:string) { }
 }
 
 export class ResetPasswordSuccess implements Action {

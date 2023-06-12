@@ -29,7 +29,7 @@ export class UserController extends BaseController implements IUserController {
 
         try {
             const users = await this.userRequestHandler.getAllUsers();
-            res.status(201).json({ users: users });
+            res.status(200).json({message:"Success", users: users });
         } catch (error) {
             res.status(500).json({ message: 'Failed to create user' });
             next(error);

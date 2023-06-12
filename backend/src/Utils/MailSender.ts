@@ -10,8 +10,8 @@ export class MailSneder {
             host: 'smtp.ethereal.email',
             port: 587,
             auth: {
-                user: 'murphy.zulauf38@ethereal.email',
-                pass: 'BvKtSQbAg8VftdpvcK'
+                user: 'dovie.bauch6@ethereal.email',
+                pass: 'TFhzDwNJMUHVX7Gq4w'
             }
         });
         return transporter;

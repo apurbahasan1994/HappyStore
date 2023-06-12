@@ -3,7 +3,7 @@ import { UserRepository } from "../../Repositories/User/UserRepository";
 
 
 export interface IUserService {
-    getAllUsers(): Promise<void>;
+    getAllUsers(): Promise<any>;
     getUserByEmail(email: string): Promise<User | null>;
     createUser(userData: Partial<User>): Promise<User | null>;
     getUserById(id: string): Promise<User | null>;
@@ -22,6 +22,7 @@ export class UserService implements IUserService {
     public async getAllUsers() {
         try {
             const users = await this.userRepository.getAllUsers();
+            return users;
         }
         catch (e) {
             throw e;

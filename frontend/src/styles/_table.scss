@@ -1,0 +1,15 @@
+.table-wrapper {
+    border: 1px solid rgb(222, 215, 215);
+    border-radius: 4px;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+
+table {
+    width: 100%;
+}
+
+.paginator-wrapper {
+    position: sticky;
+    right: 0px;
+}

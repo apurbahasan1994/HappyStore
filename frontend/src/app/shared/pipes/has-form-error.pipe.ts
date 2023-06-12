@@ -7,7 +7,12 @@ import { FormGroup } from '@angular/forms';
 export class HasFormErrorPipe implements PipeTransform {
 
   transform(formGroup: FormGroup, controlName: string, error: string): boolean {
-    return formGroup.get(controlName).hasError(error) && formGroup.get(controlName).touched
+    console.log('called');
+    const control = formGroup.get(controlName);
+    if (!control || !control.errors) {
+      return false;
+    }
+    return control.errors[error] && control.touched;
   }
 
 }

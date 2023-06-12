@@ -8,12 +8,12 @@ export class UserRequestHandler {
         this.userService = new UserService();
     }
 
-    public async getAllUsers(){
-        try{
-            const users = this.userService.getAllUsers();
+    public async getAllUsers() {
+        try {
+            const users = await this.userService.getAllUsers();
             return users;
         }
-        catch(e){
+        catch (e) {
 
         }
     }

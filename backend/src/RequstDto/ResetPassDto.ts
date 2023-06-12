@@ -1,4 +1,4 @@
 export interface ResetPassDTO{
     password:string;
-    id:number;
+    email:string;
 }

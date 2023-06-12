@@ -25,19 +25,18 @@ export class UserEffects {
         ofType(Types.INIT),
         switchMap((_) => {
             return this.authService.checkUserValidity().pipe(
-                map((response: any) => {
-                    if (response.status === 200) {
+                map((response: { message: string, data: { user: IUserBase } }) => {
+                    if (response) {
                         const user = response.data.user;
                         this.authService.isLoggedIn = true;
                         return new InitAuthorized(user);
                     }
-                    else {
+                    else{
                         return new InitUnAuthorized();
                     }
                 }),
                 catchError(error => {
                     this.authService.isLoggedIn = false;
-                    this.router.navigateByUrl('/')
                     return of(new InitError(error.message))
                 })
             )
@@ -75,7 +74,7 @@ export class UserEffects {
                     const { user, accessToken, refreshToken } = response.responseWithToken;
                     localStorage.setItem('accessToken', accessToken);
                     localStorage.setItem('refreshToken', refreshToken);
-                    this.router.navigateByUrl('');
+                    this.router.navigateByUrl('/dashboard');
                     this.notificcation.success('Successfully logged in');
                     return new SignInEmailSuccess(user)
                 }),
@@ -106,7 +105,7 @@ export class UserEffects {
             )
         }),
     );
-    
+
     @Effect()
     forgotPass: Observable<Action> = this.actions.pipe(
         ofType(Types.FORGOT_PASS_EMAIL),
@@ -131,9 +130,9 @@ export class UserEffects {
     resetPass: Observable<Action> = this.actions.pipe(
         ofType(Types.RESET_PASSWORD),
         map((action: fromActions.ResetPassword) => {
-            return { password: action.newPassword, token: action.resetToken };
+            return { password: action.newPassword, token: action.resetToken, email: action.email };
         }),
-        switchMap((payload: { password: string, token: string }) => this.authService.resetPassWord(payload)
+        switchMap((payload: { password: string, token: string, email: string }) => this.authService.resetPassWord(payload)
 
             .pipe(
                 map((_) => {

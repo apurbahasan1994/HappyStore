@@ -27,7 +27,7 @@ export class ProductController extends BaseController implements IProductControl
     public async getAllProducts(req: Request, res: Response, next: NextFunction) {
         try {
             const products = await this.requestHandler.getAllProducts();
-            return res.status(200).json({ products: products });
+            return res.status(200).json({message:'Successfull', products: products });
         }
         catch (e) {
             SetResponseWithMessage.setErrorAndGoNext(e.message, 400, res, next);

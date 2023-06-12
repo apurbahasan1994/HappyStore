@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutComponent } from './layout.component';
-import { Screen1Component } from './screen1/screen1.component';
-import { Screen2Component } from './screen2/screen2.component';
 import { AuthGuard } from '@app/shared/guard';
 
 const routes: Routes = [
@@ -21,13 +19,13 @@ const routes: Routes = [
                 canActivate: [AuthGuard]
             },
             {
-                path: 'screen1',
-                loadChildren: () => import('./screen1/screen1.module').then(m => m.Screen1Module),
+                path: 'products',
+                loadChildren: () => import('../products/products.module').then(m => m.ProductsModule),
                 canActivate: [AuthGuard]
             },
             {
-                path: 'screen2',
-                component: Screen2Component,
+                path: 'users',
+                loadChildren: () => import('../Users/users.module').then(m => m.UsersModule),
                 canActivate: [AuthGuard]
             }
         ]

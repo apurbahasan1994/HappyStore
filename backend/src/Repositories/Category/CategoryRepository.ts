@@ -9,6 +9,12 @@ export interface ICategoryRepository {
 
 
 class CategoryRepository implements ICategoryRepository {
+  /**
+ * Get all categories.
+ *
+ * @returns {Promise<Category[]>} - A promise that resolves to an array of all categories.
+ * @throws {Error} - If an error occurs while fetching the categories.
+ */
   public async getAllCategories(): Promise<Category[]> {
     try {
       const categories = await Category.findAll();
@@ -18,6 +24,13 @@ class CategoryRepository implements ICategoryRepository {
     }
   }
 
+  /**
+   * Get a category by ID.
+   *
+   * @param {number} id - The ID of the category.
+   * @returns {Promise<Category | null>} - A promise that resolves to the category with the specified ID, or null if not found.
+   * @throws {Error} - If an error occurs while fetching the category.
+   */
   public async getCategoryById(id: number): Promise<Category | null> {
     try {
       const category = await Category.findByPk(id);
@@ -27,6 +40,13 @@ class CategoryRepository implements ICategoryRepository {
     }
   }
 
+  /**
+   * Create a new category.
+   *
+   * @param {Partial<Category>} categoryData - The category data.
+   * @returns {Promise<Category>} - A promise that resolves to the created category.
+   * @throws {Error} - If an error occurs while creating the category.
+   */
   public async createCategory(categoryData: Partial<Category>): Promise<Category> {
     try {
       const createdCategory = await Category.create(categoryData);
@@ -36,6 +56,14 @@ class CategoryRepository implements ICategoryRepository {
     }
   }
 
+  /**
+   * Update a category by ID.
+   *
+   * @param {number} id - The ID of the category.
+   * @param {Partial<Category>} categoryData - The updated category data.
+   * @returns {Promise<Category | null>} - A promise that resolves to the updated category, or null if the category is not found.
+   * @throws {Error} - If an error occurs while updating the category.
+   */
   public async updateCategory(id: number, categoryData: Partial<Category>): Promise<Category | null> {
     try {
       const category = await Category.findByPk(id);
@@ -49,6 +77,13 @@ class CategoryRepository implements ICategoryRepository {
     }
   }
 
+  /**
+   * Delete a category by ID.
+   *
+   * @param {number} id - The ID of the category.
+   * @returns {Promise<boolean>} - A promise that resolves to true if the category is successfully deleted, false otherwise.
+   * @throws {Error} - If an error occurs while deleting the category.
+   */
   public async deleteCategory(id: number): Promise<boolean> {
     try {
       const category = await Category.findByPk(id);

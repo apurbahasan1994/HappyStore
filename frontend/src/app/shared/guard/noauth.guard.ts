@@ -12,14 +12,14 @@ import { isAuthorized } from '@app/store/user';
 })
 export class NoauthGuard implements CanActivate {
 
-  constructor(private router: Router, private _authService: AuthService, store: Store<AppState>) {
-    
+  constructor(private router: Router, private _authService: AuthService, private store: Store<AppState>) { }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    return this.store.pipe(select(isAuthorized)).pipe(map(res => {
+      if(res){
+        this.router.navigateByUrl('/');
+      }
+      return (!res);
+    }));
   }
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return !this._authService.isLoggedIn;
-  }
 }

@@ -1,4 +1,4 @@
-import { body, header, check, validationResult } from 'express-validator';
+import { body, header, check, validationResult, query } from 'express-validator';
 import { UserService } from '../Services/User/UserService';
 import { Request } from 'express';
 export class EntityFieldValidator {
@@ -76,6 +76,16 @@ export class EntityFieldValidator {
         body('token')
             .notEmpty()
             .withMessage('invalid token'),
+        body('email').notEmpty()
+            .withMessage('Email cant be empty')
+            .isEmail()
+            .withMessage('Valid email is required')
+            .custom(async (email) => {
+                const usedEmail = await EntityFieldValidator.userService.getUserByEmail(email);
+                if (!usedEmail) {
+                    throw new Error('User not found')
+                }
+            }),
         body('password')
             .notEmpty()
             .withMessage('Password can not be empty')

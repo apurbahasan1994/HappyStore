@@ -10,7 +10,7 @@
                     <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Email</mat-label>
                         <input required matInput placeholder="Email" formControlName="email">
-                        <mat-error *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.touched">
+                        <mat-error *ngIf="hasError(loginForm,'email','required')">
                             Please enter a valid email.
                         </mat-error>
                     </mat-form-field>
@@ -21,7 +21,7 @@
                     <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Password</mat-label>
                         <input required matInput type="password" placeholder="Password" formControlName="password">
-                        <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">
+                        <mat-error *ngIf="hasError(loginForm,'password','required')">
                             Please enter a password.
                         </mat-error>
                     </mat-form-field>
@@ -34,7 +34,7 @@
                         <input required matInput type="password" placeholder="Confrim Password"
                             formControlName="confirmPassword">
                         <mat-error
-                            *ngIf="loginForm.controls.confirmPassword.invalid && loginForm.controls.confirmPassword.touched">
+                        *ngIf="hasError(loginForm,'confirmPassword','required')">
                             Please enter confirm password.
                         </mat-error>
                     </mat-form-field>

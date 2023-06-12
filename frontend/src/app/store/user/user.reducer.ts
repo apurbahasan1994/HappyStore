@@ -5,7 +5,7 @@ import { Action } from "@ngrx/store";
 export const userReducerKey = 'user';
 // stores data and current state of the data
 export interface UserState {
-    entity: IUserBase | EmailPasswordCredentials;
+    entity: IUserBase;
     uid: string;
     loading: boolean;
     error: string;
@@ -35,7 +35,7 @@ export function reducer(state = initialState, action: fromActions.All): UserStat
 
         // signin
         case fromActions.Types.SIGN_IN_EMAIL:
-            return { ...state, loading: true, error: null, entity: (action as fromActions.SignInEmail).credentials }
+            return { ...state, loading: true, error: null, entity: null }
         case fromActions.Types.SIGN_IN_EMAIL_SUCCESS:
             return { ...state, loading: false, error: null, entity: (action as fromActions.SignInEmailSuccess).user }
         case fromActions.Types.SIGN_IN_EMAIL_ERROR:
