@@ -29,7 +29,7 @@ export class UserController extends BaseController implements IUserController {
 
         try {
             const users = await this.userRequestHandler.getAllUsers();
-            res.status(201).json({ users: users });
+            res.status(200).json({ message: "Success", users: users });
         } catch (error) {
             res.status(500).json({ message: 'Failed to create user' });
             next(error);
@@ -42,7 +42,8 @@ export class UserController extends BaseController implements IUserController {
             res.status(400).json({ message: 'Missing required fields' });
             return;
         }
-        const { name,
+        const { firstName,
+            lastName,
             email,
             street,
             house,
@@ -55,7 +56,8 @@ export class UserController extends BaseController implements IUserController {
             isAdmin } = req.body;
 
         const newUser: ICreateUser = {
-            name,
+            firstName,
+            lastName,
             email,
             password,
             zip,
@@ -76,21 +78,24 @@ export class UserController extends BaseController implements IUserController {
         }
     }
 
-    public getUserById(req: Request, res: Response, next: NextFunction): void {
-        const userId: string = req.params.id;
-
+    public async getUserById(req: Request, res: Response, next: NextFunction): Promise<void> {
+        const { userId } = req.params;
+        if (!userId || userId == 'undefined') {
+            res.status(400).json({ message: 'User not found', data: { user: null } });
+            return;
+        }
         try {
-            const user = this.userRequestHandler.getUserById(userId);
+            const user = await this.userRequestHandler.getUserById(userId);
 
             if (!user) {
                 res.status(404).json({ message: 'User not found' });
                 return;
             }
 
-            res.status(200).json({ message: "Success", data: { user } });
+            res.status(200).json({ message: "Success", data: { user: user.dataValues } });
+            return;
         } catch (error) {
             res.status(500).json({ message: 'Failed to get user' });
-            next(error);
         }
     }
 
@@ -100,7 +105,9 @@ export class UserController extends BaseController implements IUserController {
             return;
         }
         const userId: string = req.params.id;
-        const { name,
+        const {
+            firstName,
+            lastName,
             email,
             street,
             house,
@@ -111,7 +118,8 @@ export class UserController extends BaseController implements IUserController {
             phone,
             mobile, } = req.body;
         const updatedUser: ICreateUser = {
-            name,
+            firstName,
+            lastName,
             email,
             password,
             zip,

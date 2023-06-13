@@ -2,3 +2,5 @@ export const requiredUserCreateFields=['name','email','country','mobile','passwo
 export const requiredCategoryCreate=['name'];
 export const requiredgetCategoryByPk=['categoryId']
 export const requiredgetProductByPk=['productId'];
+
+export const hashingSalt=10;

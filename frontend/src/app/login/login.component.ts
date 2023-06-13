@@ -42,6 +42,13 @@ export class LoginComponent implements OnInit {
         return confirm.value && password.value !== confirm.value ? { repeat: true } : null;
 
     }
+    hasError(formGroup: FormGroup, controlName: string, error: string) {
+        const control = formGroup.get(controlName);
+        if (!control || !control.errors) {
+          return false;
+        }
+        return control.errors[error] && control.touched;
+      }
 
     onLogin($event: Event) {
         if (this.loginForm.invalid) {

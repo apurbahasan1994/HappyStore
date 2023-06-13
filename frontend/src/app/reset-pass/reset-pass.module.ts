@@ -10,8 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from '@app/shared/shared.module';
 import { Route, RouterModule } from '@angular/router';
+import { FlexLayoutModule } from '@angular/flex-layout';
 const routes: Route[] = [{
-  path: '', component: ResetPassComponent
+  path: ':token', component: ResetPassComponent
 }]
 
 @NgModule({
@@ -26,6 +27,7 @@ const routes: Route[] = [{
     MatButtonModule,
     MatProgressSpinnerModule,
     SharedModule,
+    FlexLayoutModule,
     RouterModule.forChild(routes)
   ]
 })

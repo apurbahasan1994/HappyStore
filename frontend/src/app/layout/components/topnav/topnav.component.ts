@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { AppState } from '@app/store';
+import { IUserBase, getUser } from '@app/store/user';
+import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-topnav',
@@ -9,8 +13,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class TopnavComponent implements OnInit {
     public pushRightClass: string;
-
-    constructor(public router: Router, private translate: TranslateService) {
+    user$:Observable<IUserBase>;
+    user :IUserBase;
+    constructor(public router: Router, private translate: TranslateService,private store:Store<AppState>) {
         this.router.events.subscribe(val => {
             if (val instanceof NavigationEnd && window.innerWidth <= 992 && this.isToggled()) {
                 this.toggleSidebar();
@@ -19,6 +24,11 @@ export class TopnavComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.user$ = this.store.pipe(select(getUser));
+        this.user$.subscribe(data=>{
+            console.log(data)
+            this.user=data;
+        });
         this.pushRightClass = 'push-right';
     }
 

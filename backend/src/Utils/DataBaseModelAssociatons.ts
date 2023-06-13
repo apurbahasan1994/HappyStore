@@ -14,6 +14,8 @@ Order.belongsTo(User, {
 User.hasMany(Order, {
     foreignKey: "orderId"
 });
+PasswordToken.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(PasswordToken, { foreignKey: 'userId' });
 Product.belongsToMany(Order, { through: OrderItem, foreignKey: 'productId' });
 Order.belongsToMany(Product, { through: OrderItem, foreignKey: 'orderId' });
 Product.hasMany(OrderItem, {
@@ -29,7 +31,5 @@ OrderItem.belongsTo(Order, {
     foreignKey: 'orderId'
 });
 
-User.hasMany(PasswordToken);
-PasswordToken.belongsTo(User);
 
 export { sequelize };

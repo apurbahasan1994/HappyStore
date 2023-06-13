@@ -3,6 +3,7 @@ import { BaseRoute } from '../BaseModels/BaseRouter';
 import { DynamicRouteBuilder } from '../Utils/DynamicRouteBuilder';
 import { IRouteConfig } from '../InterFaces/RouteHelper/DynamicRoute';
 import { UserController } from '../Controllers/UserController';
+import { AuthenticationCheck } from '../Middlewares/AuthMiddleWare';
 export class UserRouter extends BaseRoute {
     protected basePath: string = 'users';
     private userController: UserController;
@@ -20,35 +21,35 @@ export class UserRouter extends BaseRoute {
             {
                 methods: ["get"],
                 path: '/' + this.basePath + '/',
-                middleWares: [],
+                middleWares: [AuthenticationCheck.authenticate],
                 validators: [],
                 handler: this.userController.getAllUsers
             },
             {
                 methods: ["post"],
                 path: '/' + this.basePath + '/create',
-                middleWares: [],
+                middleWares: [AuthenticationCheck.authenticate],
                 validators: [],
                 handler: this.userController.createUser
             },
             {
                 methods: ["get"],
                 path: '/' + this.basePath + '/me',
-                middleWares: [],
+                middleWares: [AuthenticationCheck.authenticate],
                 validators: [],
                 handler: this.userController.checkUserValidity
             },
             {
                 methods: ["get"],
                 path: '/' + this.basePath + `/:userId`,
-                middleWares: [],
+                middleWares: [AuthenticationCheck.authenticate],
                 validators: [],
                 handler: this.userController.getUserById
             },
             {
                 methods: ["put"],
                 path: '/' + this.basePath + `/:userId`,
-                middleWares: [],
+                middleWares: [AuthenticationCheck.authenticate],
                 validators: [],
                 handler: this.userController.updateUser
             },

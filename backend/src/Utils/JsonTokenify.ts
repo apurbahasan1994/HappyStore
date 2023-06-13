@@ -4,18 +4,19 @@ import { secret, refresh } from '../Utils/EnvConfig';
 import User from '../Models/User';
 export class Tokenify {
 
-    static generateRefreshToken(email: string): string {
-        return jwt.sign({ email }, refresh, { expiresIn: '10h' });
+    static generateRefreshToken(user: any): string {
+        const { exp,iat, ...userWithoutExp } = user;
+        return jwt.sign(userWithoutExp, refresh, { expiresIn: '10h' });
     }
 
     static generateAcessToken(user: any): string {
-        const { exp, ...userWithoutExp } = user;
-        return jwt.sign(userWithoutExp, secret, { expiresIn: '15m' });
+        const { exp, iat, ...userWithoutExp } = user;
+        return jwt.sign(userWithoutExp, secret, { expiresIn: '1m' });
     }
 
     static generateTokens(user: Partial<User>): { accessToken: string; refreshToken: string } {
         const accessToken = Tokenify.generateAcessToken(user);
-        const refreshToken = Tokenify.generateRefreshToken(user.email);
+        const refreshToken = Tokenify.generateRefreshToken(user);
         return { accessToken, refreshToken };
     }
 

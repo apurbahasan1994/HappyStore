@@ -30,7 +30,7 @@ app.use(AppRouter.registerRoutes(), router);
 app.use(ErrorMiddleWare.sendErrorMessageWithResponse);
 
 // Db sync
-sequelize.sync({force:true}).then(() => {
+sequelize.sync().then(() => {
   app.listen(port);
 }).catch(e => {
   console.log(e.message);

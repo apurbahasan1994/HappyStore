@@ -1,0 +1,66 @@
+<div class="products-container" fxLayout="column" fxLayoutGap="20px">
+  <div class="w-100" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="20px">
+    <button (click)="changeView()" class="btn btn-secondary list-view" mat-raised-button>
+      <mat-icon *ngIf="isListView">list</mat-icon>
+      <mat-icon *ngIf="!isListView">grid_on</mat-icon>
+    </button>
+    <button class="btn" [routerLink]="'add-product'" mat-raised-button color="primary">
+      <mat-icon>add</mat-icon>
+      <span>Add Product</span>
+    </button>
+  </div>
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="products">
+
+      <!-- Columns -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let product">{{ product.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let product">{{ product.price }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="brand">
+        <th mat-header-cell *matHeaderCellDef>Brand</th>
+        <td mat-cell *matCellDef="let product">{{ product.brand }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="countInStock">
+        <th mat-header-cell *matHeaderCellDef>InStock</th>
+        <td mat-cell *matCellDef="let product">{{ product.countInStock }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef>Rating</th>
+        <td mat-cell *matCellDef="let product">{{ product.rating }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="featured">
+        <th mat-header-cell *matHeaderCellDef>Featured</th>
+        <td mat-cell *matCellDef="let product">{{ product.isFeatured }}</td>
+      </ng-container>
+
+      <!-- Add more ng-container sections for other columns -->
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Action</th>
+        <td mat-cell *matCellDef="let product">
+          <button mat-icon-button color="primary" (click)="editProduct(product)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteProduct(product)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Table rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+  </div>
+</div>

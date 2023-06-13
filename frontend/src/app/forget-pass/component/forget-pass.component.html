@@ -1,7 +1,8 @@
 <app-auth-component-wrapper [imageUrl]="'assets/images/forgot-pass.jpg'">
 
-    <form class="login-form w-100" fxFlex [formGroup]="resetForm">
-        <div class="mb-20 font-size-20"><span class="primary-color font-size-20 font-weight-600">Forgot password?</span></div>
+    <form class="login-form w-100" fxFlex [formGroup]="forgotPassForm">
+        <div class="mb-20 font-size-20"><span class="primary-color font-size-20 font-weight-600">Forgot password?</span>
+        </div>
         <div class="text-secondary mb30">Please enter you password to get reset password link
         </div>
         <div class="form-container" fxLayout="column" fxLayoutAlign="center start">
@@ -10,26 +11,27 @@
                     <mat-form-field class="w-100" appearance="outline">
                         <mat-label>Email</mat-label>
                         <input required matInput placeholder="Email" formControlName="email">
-                        <mat-error *ngIf="resetForm.controls.email.invalid && resetForm.controls.email.touched">
+                        <mat-error
+                            *ngIf="forgotPassForm.controls.email.invalid && forgotPassForm.controls.email.touched">
                             Please enter a valid email.
                         </mat-error>
                     </mat-form-field>
                 </div>
             </div>
-            
+
             <div class="mt-20 w-100" fxLayout="row" fxLayout.lt-md="column">
                 <div class="w-100">
                     <button fxLayout="row" fxLayoutAlign="center center" mat-raised-button color="primary"
-                        class="w-100 btn">
-                        <!-- <mat-spinner diameter="30" class="uploader-status"></mat-spinner> -->
-                        <span >Submit</span>
+                        class="w-100 btn" (click)="onSbmit()">
+
+                        <mat-spinner diameter="30" class="uploader-status" *ngIf="isLoading$|async"></mat-spinner>
+                        <span *ngIf="!(isLoading$|async)">Login</span>
                     </button>
                 </div>
             </div>
             <div class="mt-30 w-100">
                 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center" class="w-100">
-                    <a class="primary-color font-size-14"
-                        routerLink="/signup">Login</a>
+                    <a class="primary-color font-size-14" routerLink="/signup">Login</a>
                 </div>
             </div>
         </div>

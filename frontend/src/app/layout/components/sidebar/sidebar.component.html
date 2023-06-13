@@ -3,10 +3,12 @@
         <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/dashboard']">
             <mat-icon class="sidenav-icon">dashboard</mat-icon> {{ 'Dashboard' | translate }}
         </a>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/screen1']">
-            <mat-icon class="sidenav-icon">build</mat-icon> {{ 'Products' | translate }}
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/products']">
+            <mat-icon class="sidenav-icon"><span class="material-icons-outlined">
+                    inventory_2
+                </span></mat-icon> {{ 'Products' | translate }}
         </a>
-        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/screen2']">
+        <a mat-list-item [routerLinkActive]="'active'" [routerLink]="['/users']">
             <mat-icon class="sidenav-icon">people</mat-icon> {{ 'Users' | translate }}
         </a>
     </mat-nav-list>

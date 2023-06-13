@@ -7,6 +7,7 @@ import { LoginComponent } from './login.component';
 import { MaterialModule } from '../shared/modules/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@app/shared/shared.module';
+import { PipesModule } from '@app/shared/pipes/pipes.module';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { SharedModule } from '@app/shared/shared.module';
         FormsModule,
         ReactiveFormsModule,
         FlexLayoutModule,
-        SharedModule
+        SharedModule,
+        PipesModule
     ],
     declarations: [LoginComponent]
 })

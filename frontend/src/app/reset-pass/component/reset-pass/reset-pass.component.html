@@ -35,10 +35,10 @@
         
             <div class="w-100" fxLayout="row" fxLayout.lt-md="column">
                 <div class="w-100">
-                    <button fxLayout="row" fxLayoutAlign="center center" mat-raised-button color="primary"
+                    <button (click)="onsubmit()" fxLayout="row" fxLayoutAlign="center center" mat-raised-button color="primary"
                         class="w-100 btn" >
-                        <!-- <mat-spinner diameter="30" class="uploader-status" *ngIf="loading$|async"></mat-spinner> -->
-                        <span >Submit</span>
+                        <mat-spinner diameter="30" class="uploader-status" *ngIf="loading$|async"></mat-spinner>
+                        <span *ngIf="!(loading$|async)">Submit</span>
                     </button>
                 </div>
             </div>

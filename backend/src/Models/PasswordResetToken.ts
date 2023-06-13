@@ -5,14 +5,14 @@ interface PasswordTokenAttributes {
     id: number;
     token: string;
     expires_at: Date;
-    userId:number;
+    userId?: number;
 }
-interface PasswordTokenCreationAttributes extends Optional<PasswordTokenAttributes, 'id'> { }
-class PasswordToken extends Model<PasswordTokenAttributes, PasswordTokenAttributes> implements PasswordTokenAttributes {
-    id: number;
+interface PasswordTokenCreationAttributes extends Optional<PasswordTokenAttributes, 'id' | 'userId'> { }
+class PasswordToken extends Model<PasswordTokenAttributes, PasswordTokenCreationAttributes> implements PasswordTokenAttributes {
+    id!: number;
     token: string;
     expires_at: Date;
-    userId:number;
+    userId!: number;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 
@@ -34,14 +34,14 @@ PasswordToken.init(
             type: DataTypes.DATE,
             allowNull: false
         },
-        userId:{
+        userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
         }
 
     },
     {
-        tableName: 'categories',
+        tableName: 'passwordtokens',
         sequelize,
     }
 );

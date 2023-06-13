@@ -1,4 +1,4 @@
-import { body, header, check, validationResult } from 'express-validator';
+import { body, header, check, validationResult, query } from 'express-validator';
 import { UserService } from '../Services/User/UserService';
 import { Request } from 'express';
 export class EntityFieldValidator {
@@ -36,7 +36,7 @@ export class EntityFieldValidator {
             }),
     ]
 
-    static PassworValidations =[
+    static PassworValidations = [
         body('password')
             .notEmpty()
             .withMessage('Password can not be empty')
@@ -54,8 +54,8 @@ export class EntityFieldValidator {
     ]
 
     static SignInValidations = [
-       ...EntityFieldValidator.EmailValidationsSignIn,
-       ...EntityFieldValidator.PassworValidations
+        ...EntityFieldValidator.EmailValidationsSignIn,
+        ...EntityFieldValidator.PassworValidations
     ]
 
     static SignUpValidations = [
@@ -70,6 +70,29 @@ export class EntityFieldValidator {
             .isNumeric()
             .withMessage('Mobile must contain only numeric characters'),
 
+    ]
+
+    static tokenValidations = [
+        body('token')
+            .notEmpty()
+            .withMessage('invalid token'),
+        body('email').notEmpty()
+            .withMessage('Email cant be empty')
+            .isEmail()
+            .withMessage('Valid email is required')
+            .custom(async (email) => {
+                const usedEmail = await EntityFieldValidator.userService.getUserByEmail(email);
+                if (!usedEmail) {
+                    throw new Error('User not found')
+                }
+            }),
+        body('password')
+            .notEmpty()
+            .withMessage('Password can not be empty')
+            .isLength({ min: 6 })
+            .withMessage('Password must be at least 6 character long')
+            .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/)
+            .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one digit'),
     ]
 
     static vaidationErrors(req: Request) {

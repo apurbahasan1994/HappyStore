@@ -8,21 +8,22 @@ const routes: Routes = [
     {
         path: 'login',
         loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
-        canActivate:[]
+        canActivate:[NoauthGuard]
     },
     {
         path: 'signup',
         loadChildren: () => import('./signup/signup.module').then(m => m.SignupModule),
-        canActivate:[]
+        canActivate:[NoauthGuard]
     },
     {
         path: 'forgot-pass',
-        loadChildren: () => import('./forget-pass/forget-pass.module').then(m => m.ForgetPassModule)
+        loadChildren: () => import('./forget-pass/forget-pass.module').then(m => m.ForgetPassModule),
+        canActivate:[NoauthGuard]
     },
     {
         path: 'reset-pass',
         loadChildren: () => import('./reset-pass/reset-pass.module').then(m => m.ResetPassModule),
-        canActivate:[]
+        canActivate:[NoauthGuard]
     },
     {
         path: '',
