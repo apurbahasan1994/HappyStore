@@ -1,9 +1,9 @@
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of, zip } from 'rxjs';
-import { map, switchMap, catchError, take, tap } from 'rxjs/operators';
+import { map, switchMap, catchError, take, tap, skipWhile } from 'rxjs/operators';
 import * as fromActions from './users.actions';
 import { Injectable } from '@angular/core';
-import { Types,} from './users.actions'; // Import action types
+import { Types, } from './users.actions'; // Import action types
 import { AuthService } from '@app/shared/services/auth/auth.service';
 import { EmailPasswordCredentials, IUserBase } from './users.models';
 import { NotificationService } from '@app/notification/notification.service';
@@ -21,18 +21,32 @@ export class UsersEffects {
     ) { }
 
     @Effect()
-    getAllUser:Observable<Action> = this.actions.pipe(
+    getAllUser: Observable<Action> = this.actions.pipe(
         ofType(fromActions.Types.GET_ALL_USERS),
-       switchMap((action:fromActions.GelAllUsers)=>this.usersService.getAllUsers().pipe(
-        map((response:{message:string,users:IUserBase[]})=>{
-           return new fromActions.GelAllUsersSuccess(response.users);
-        }),
-        catchError((err)=>{
-            this.notificcation.error('Falid to load users');
-            return of(new fromActions.GelAllUsersError());
-        })
-       )),
+        switchMap((action: fromActions.GelAllUsers) => this.usersService.getAllUsers().pipe(
+            map((response: { message: string, users: IUserBase[] }) => {
+                return new fromActions.GelAllUsersSuccess(response.users);
+            }),
+            catchError((err) => {
+                this.notificcation.error('Falid to load users');
+                return of(new fromActions.GelAllUsersError());
+            })
+        )),
 
     )
-    
+    @Effect()
+    getUserDetails: Observable<Action> = this.actions.pipe(
+        ofType(fromActions.Types.GET_USER_DETAILS),
+        switchMap((action: fromActions.GetUserDetails) => this.usersService.getUser(action.id).pipe(
+            map((response: { message: string, data:{user: IUserBase} }) => {
+                return new fromActions.GetUserDetailsSuccess(response.data.user);
+            }),
+            catchError((err) => {
+                this.notificcation.error('Falid to get the user');
+                return of(new fromActions.GetUserDetailsError('Falid to get the user'));
+            })
+        )),
+
+    )
+
 }

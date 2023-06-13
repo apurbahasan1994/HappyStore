@@ -1,0 +1,74 @@
+<div class="add-product">
+  <form class="w-100" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="mb-20 font-size-20"><span class="primary-color font-size-20 font-weight-600">Product Form</span></div>
+    <div class="text-secondary mb30">Please fill out the product details</div>
+    <div class="form-container" fxLayout="column" fxLayoutAlign="center start">
+      <div class="w-100" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between center">
+        <mat-form-field fxFlex="50"  appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput type="text" formControlName="name" placeholder="Name">
+          <mat-error *ngIf="productForm.get('name').invalid && productForm.get('name').touched">
+            Name is required
+          </mat-error>
+        </mat-form-field>        
+          <mat-form-field fxFlex="50" appearance="outline">
+            <mat-label>Brand</mat-label>
+            <input matInput type="text" formControlName="brand" placeholder="Brand">
+          </mat-form-field>
+        
+      </div>
+      <div class="w-100" fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between center">
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Price</mat-label>
+          <input matInput type="number" formControlName="price" placeholder="Price">
+          <mat-error *ngIf="productForm.get('price').invalid && productForm.get('price').touched">
+            Price is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex="50" appearance="outline">
+          <mat-label>Count in Stock</mat-label>
+          <input matInput type="number" formControlName="countInStock" placeholder="Count in Stock">
+        </mat-form-field>
+      </div>
+      <div class="w-100">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Image</mat-label>
+          <input matInput type="text" formControlName="image" placeholder="Image">
+        </mat-form-field>
+      </div>
+      <div class="w-100">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Images</mat-label>
+          <input matInput type="text" formControlName="images" placeholder="Images">
+        </mat-form-field>
+      </div>
+      
+     
+      <div class="w-100">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" placeholder="Description"></textarea>
+        </mat-form-field>
+      </div>
+      <div class="w-100" fxLayout="column" fxLayoutGap="20px">
+        <div class="text-secondary font-size-16 label-color">Rich desciption</div>
+        <div style="height: 230px;">
+          <editor
+          [formControlName]="'richDescription'"
+           [init]="{
+            plugins: [
+             'lists link image paste help wordcount'
+            ],
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | help'
+          }"></editor>
+        </div>
+      </div>
+      <div class="button__wrapper w-100" fxLayout="row"  fxLayoutAlign="space-between center">
+        <button  [routerLink]="'../'" class="btn btn-secondary" mat-stroked-button color="primary" >
+          Back
+        </button>
+        <button class="btn" mat-button color="primary" [disabled]="productForm.invalid">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>

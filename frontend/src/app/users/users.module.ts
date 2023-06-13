@@ -8,11 +8,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '@app/shared/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { AddUsersComponent } from './componenets/add-users/add-users.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    UsersComponenet
+    UsersComponenet,
+    AddUsersComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +26,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatButtonModule,
     MatIconModule,
     SharedModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class UsersModule { }

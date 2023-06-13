@@ -6,7 +6,9 @@ import { getLoading } from '@app/store/users';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as fromUsers from '../../../store/users';
-import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { DialogServiceService } from '@app/shared/services/dialog-service.service';
+import { DialogType } from '@app/shared/interfaces/dialog';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -25,7 +27,7 @@ export class UsersComponenet implements OnInit {
   ];
   isLoading$: Observable<boolean>;
   users$: Observable<IUserBase[]>;
-  constructor(private store: Store<AppState>) { }
+  constructor(private dilaogService:DialogServiceService,private store: Store<AppState>,private router:Router) { }
   ngOnInit(): void {
     this.isLoading$ = this.store.pipe(select(getLoading));
     this.store.dispatch(new fromUsers.GelAllUsers());
@@ -46,5 +48,20 @@ export class UsersComponenet implements OnInit {
   deleteUser(user: IUserBase) {
     // Handle delete functionality
     console.log('Delete user:', user);
+  }
+  navigateToAddUser(id:number){
+    this.router.navigate(['/users/edit/',id]);
+  }
+  openDeleteModal(){
+    this.dilaogService.open(
+      {
+        confirmaction: ()=>{
+        },
+        cancelAcction: ()=>{
+        },
+        payloadObject: null,
+        type: DialogType.CONFIRM
+      }
+    );
   }
 }

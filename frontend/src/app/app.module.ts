@@ -17,7 +17,7 @@ import { UserReducer } from './store/user';
 import { AuthInterceptor } from './shared/auth.interceptor';
 import { UsersReducer } from './store/users';
 import { ProductsReducer } from './store/products';
-
+import { EditorModule } from '@tinymce/tinymce-angular';
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
     /* for development
@@ -56,7 +56,8 @@ export const createTranslateLoader = (http: HttpClient) => {
                 deps: [HttpClient]
             }
         }),
-        StoreModule.forRoot({}, {})
+        StoreModule.forRoot({}, {}),
+        EditorModule
     ],
     providers: [
 

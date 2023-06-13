@@ -7,6 +7,7 @@ export const userReducerKey = 'user';
 // stores data and current state of the data
 export interface UsersState {
     entity: IUserBase[]
+    detailedUser:IUserBase,
     uid: string;
     loading: boolean;
     error: string;
@@ -14,6 +15,7 @@ export interface UsersState {
 
 const initialState: UsersState = {
     entity: [],
+    detailedUser:null,
     uid: null,
     loading: null,
     error: null
@@ -39,6 +41,12 @@ export function usersReducer(state: UsersState = initialState, action: All): Use
             return { ...state, loading: false, error: (action as fromActions.UpdateUserError).error };
         case Types.DELETE_USER_ERROR:
             return { ...state, loading: false, error: (action as fromActions.DeleteUserError).error };
+        case Types.GET_USER_DETAILS:
+            return {...state, loading:true,error:''};
+        case Types.GET_USER_DETAILS_SUCCESS:
+            return {...state,loading:false,error:'',detailedUser:(action as fromActions.GetUserDetailsSuccess).user};
+        case Types.GET_USER_DETAILS_ERROR:
+            return { ...state, loading: false, error: (action as fromActions.GetUserDetailsError).error };
         default:
             return state;
     }

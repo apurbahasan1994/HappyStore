@@ -9,6 +9,11 @@ export const getUsers = createSelector(
   (state: UsersState) => state ? state.entity : null
 );
 
+export const getUserDetails = createSelector(
+  getUsersState,
+  (state: UsersState) => state ? state.detailedUser : null
+);
+
 export const getLoading = createSelector(
   getUsersState,
   (state: UsersState) => state ? state.loading : false

@@ -10,6 +10,10 @@ export enum Types {
     GET_ALL_USERS_SUCCESS = "[Users] Get all: Success",
     GET_ALL_USERS_ERROR = "[Users]  Get all: Error",
 
+    GET_USER_DETAILS = "[Users] Get user deatils: Start",
+    GET_USER_DETAILS_SUCCESS = "[Users] Get user details : Success",
+    GET_USER_DETAILS_ERROR = "[Users]  Get user details : Error",
+
     DELETE_USER = "[Users] delete : Start",
     DELETE_USER_SUCCESS = "[Users] delete : Success",
     DELETE_USER_ERROR = "[Users]  delete : Error",
@@ -35,6 +39,25 @@ export class GelAllUsersSuccess implements Action {
 export class GelAllUsersError implements Action {
     readonly type: string = Types.GET_ALL_USERS_ERROR;
     constructor() { }
+}
+
+
+
+// get details
+
+export class GetUserDetails implements Action {
+    readonly type: string = Types.GET_USER_DETAILS;
+    constructor(public id: number) { }
+}
+
+export class GetUserDetailsSuccess implements Action {
+    readonly type: string = Types.GET_USER_DETAILS_SUCCESS;
+    constructor(public user: IUserBase) { }
+}
+
+export class GetUserDetailsError implements Action {
+    readonly type: string = Types.GET_USER_DETAILS_ERROR;
+    constructor(public error:string) { }
 }
 
 
@@ -83,3 +106,7 @@ export type All
     | DeleteUser
     | DeleteUserSuccess
     | DeleteUserError
+    | GetUserDetails
+    | GetUserDetailsSuccess
+    | GetUserDetailsError
+

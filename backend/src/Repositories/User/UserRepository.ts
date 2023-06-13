@@ -48,7 +48,7 @@ export class UserRepository {
     public async getUserById(id: string): Promise<User | null> {
         try {
             const user: User = await User.findOne({
-                where: { id: id },
+                where: { id: +id },
                 attributes: {
                     exclude: ['passwordHash']
                 }

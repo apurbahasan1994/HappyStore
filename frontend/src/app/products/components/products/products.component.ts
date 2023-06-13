@@ -19,6 +19,7 @@ export class ProductsComponent implements OnInit {
   dataSource: MatTableDataSource<IProduct>;
   products: IProduct[] = [
   ];
+  isListView=true;
   constructor(private store: Store<AppState>) { }
   ngOnInit(): void {
     this.isLoading$ = this.store.pipe(select(getLoading));
@@ -40,6 +41,9 @@ export class ProductsComponent implements OnInit {
   deleteUser(user: IUserBase) {
     // Handle delete functionality
     console.log('Delete user:', user);
+  }
+  changeView(){
+    this.isListView=!this.isListView;
   }
 
 }
