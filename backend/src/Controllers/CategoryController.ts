@@ -46,7 +46,7 @@ export class CategoryController extends BaseController {
     }
 
     public async createCategory(req: Request, res: Response, next: NextFunction) {
-        if (EntityFieldValidator.isRequireFieldExist(req.body, requiredCategoryCreate)) {
+        if (!EntityFieldValidator.isRequireFieldExist(req.body, requiredCategoryCreate)) {
             SetResponseWithMessage.setErrorAndGoNext('Name is required', 400, res, next);
             return;
         }

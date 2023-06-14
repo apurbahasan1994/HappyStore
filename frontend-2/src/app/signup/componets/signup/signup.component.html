@@ -1,0 +1,140 @@
+<app-auth-component-wrapper [imageUrl]="'assets/images/signup.jpg'">
+  <div class="login-form w-100">
+    <div class="header-container">
+      <div class="mb-20 font-size-20"><span class="primary-color font-size-20 font-weight-600">SignUp</span></div>
+      <div class="text-secondary">Welcome to our website!. Please fill up the form to continue with us</div>
+    </div>
+    <mat-horizontal-stepper [linear]="true" #stepper class="login-form">
+      <!-- Step 1: Personal Information -->
+      <mat-step [stepControl]="personalInfoForm">
+        <form [formGroup]="personalInfoForm" (ngSubmit)="nextStep(stepper)">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" placeholder="First Name">
+            <mat-error
+              *ngIf="(personalInfoForm|hasFormError:'firstName':'required') &&personalInfoFormControls['firstName'].touched">
+              First Name is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" placeholder="Last Name">
+            <mat-error *ngIf="personalInfoForm.get('lastName').invalid && personalInfoForm.get('lastName').touched">
+              Last Name is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required type="email" placeholder="Email">
+            <mat-error *ngIf="hasError(personalInfoForm,'email','email')">
+              Valid email is required
+            </mat-error>
+            <mat-error
+              *ngIf="hasError(personalInfoForm,'email','required')">
+              Email is required
+            </mat-error>
+           
+          </mat-form-field>
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" placeholder="Password" type="password">
+            <mat-error *ngIf="hasError(personalInfoForm,'password','required')">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="hasError(personalInfoForm,'password','minlength')">
+              Password minimum length is 6 characters
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone" placeholder="Phone">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Mobile</mat-label>
+            <input matInput  required formControlName="mobile" placeholder="Mobile">
+            <mat-error *ngIf="hasError(personalInfoForm,'mobile','minlength')">
+              Invalid mobile number
+            </mat-error>
+            <mat-error *ngIf="hasError(personalInfoForm,'mobile','required')">
+              Mobile is required
+            </mat-error>
+          </mat-form-field>
+          <div class="mt20" fxLayoutGap="20px" fxLayout="row" fxLayoutAlign="space-between center">
+            <button class="btn btn-secondary" mat-stroked-button type="button" (click)="personalInfoForm.reset()">
+              Reset
+            </button>
+            <button class="btn" mat-button color="primary" [disabled]="personalInfoForm.invalid">Next</button>
+          </div>
+        </form>
+        <div class="mt-60 w-100">
+          <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="center" class="w-100">
+            <span class="text-secondary">Already have an account?</span>
+            <a class="primary-color font-size-14" routerLink="/login">Login</a>
+          </div>
+        </div>
+      </mat-step>
+
+      <!-- Step 2: Account Information -->
+      <mat-step [stepControl]="accountInfoForm">
+        <form [formGroup]="accountInfoForm" (ngSubmit)="nextStep(stepper)">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Street</mat-label>
+            <input matInput formControlName="street" placeholder="Street">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>House</mat-label>
+            <input matInput formControlName="house" placeholder="House">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>ZIP</mat-label>
+            <input matInput formControlName="zip" placeholder="ZIP">
+            <mat-error *ngIf="hasError(accountInfoForm,'zip','required')">
+              ZIP is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>City</mat-label>
+            <input matInput formControlName="city" placeholder="City">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Country</mat-label>
+            <input matInput formControlName="country" placeholder="Country">
+            <mat-error *ngIf="hasError(accountInfoForm,'country','required')">
+              Country is required
+            </mat-error>
+          </mat-form-field>
+          <div class="mt20" fxLayoutGap="20px" fxLayout="row" fxLayoutAlign="space-between center">
+            <button class="btn btn-secondary" mat-stroked-button color="primary" (click)="stepper.previous()">
+              Back
+            </button>
+            <button class="btn" mat-button color="primary" [disabled]="accountInfoForm.invalid">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 4: Confirmation -->
+      <mat-step>
+        <p>Personal Information:</p>
+        <p>First Name: {{ personalInfoForm.value.firstName }}</p>
+        <p>Last Name: {{ personalInfoForm.value.lastName }}</p>
+        <p>Email: {{ personalInfoForm.value.email }}</p>
+        <p>Phone: {{ personalInfoForm.value.phone }}</p>
+        <p>Mobile: {{ personalInfoForm.value.mobile }}</p>
+        <p>Street: {{ accountInfoForm.value.street }}</p>
+        <p>House: {{ accountInfoForm.value.house }}</p>
+        <p>ZIP: {{ accountInfoForm.value.zip }}</p>
+        <p>City: {{ accountInfoForm.value.city }}</p>
+        <p>Country: {{ accountInfoForm.value.country }}</p>
+        <div class="mt20" fxLayoutGap="20px" fxLayout="row" fxLayoutAlign="space-between center">
+          <button class="btn btn-secondary" mat-stroked-button color="primary" (click)="stepper.previous()">
+            Back
+          </button>
+          <button class="btn" mat-button color="primary" (click)="submit()">
+            <mat-spinner diameter="30" class="uploader-status" *ngIf="loading$|async"></mat-spinner>
+            <span *ngIf="!(loading$|async)">Submit</span>
+          </button>
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</app-auth-component-wrapper>
